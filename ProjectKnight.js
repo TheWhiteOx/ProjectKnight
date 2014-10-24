@@ -1,6 +1,7 @@
+new Meteor.Collection('rooms');
+
 if (Meteor.isClient) {
 
-  };
 
 }
 
