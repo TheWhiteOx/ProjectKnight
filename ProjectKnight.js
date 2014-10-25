@@ -1,3 +1,6 @@
+//new MongoDB collection that stores all the games rooms.
+//DB has full read and write on server and client.
+//The app has not been secured yet and is still in development mode
 Rooms = new Meteor.Collection('rooms');
 
 
