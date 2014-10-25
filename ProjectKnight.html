@@ -7,9 +7,9 @@
  <div>{{> roomTitle}}</div>
  <div>{{> roomDesc}}</div>
  <div>{{> roomContents}}</div>
- <hr>
+ <br>
  <div>{{> compass}}</div>
- <hr><hr>
+ <hr>
 <br>
 <br>
 <br>
@@ -52,7 +52,7 @@
 		</tr>
 		<tr>
 			<td>West</td>
-			<td></td>
+			<td>--O--</td>
 			<td>East</td>
 			<td></td>
 		</tr>
@@ -68,18 +68,52 @@
 
 
 <template name = "addRoom">
+	{{#if isBuilder}}
 	<div>Room Title
       <input type = "text" size = "50" id = "roomTitle"/>
     </div>
+    <br>
 
     <div>Room Description
-      <textarea type = "text" rows = "15" cols = "50" id = "roomDesc">
-      	test</textarea>
+      <textarea type = "text" rows = "15" cols = "50" id = "roomDesc"></textarea>
     </div>
+    <br>
     <div>Room Contents
       <input type = "text" id = "roomContents"/>
     </div>
+    <br>
     <div> Room Events
       <input type = "text" id = "roomEvents"/>
     </div>
+    <br>
+
+    <div>
+    	 <h3>Rooms to Connect To (enter roomId):</h3>
+
+    	<table id = "connectedTo">
+		<tr>
+			<td></td>
+			<td>North<input type = "text" size = "20" id = "connectedNorth"/></td>
+			<td></td>
+			<td>Up<input type = "text" size = "20" id = "connectedUp"/></td>
+		</tr>
+		<tr>
+			<td>West<input type = "text" size = "20" id = "connectedWest"/></td>
+			<td>--O--</td>
+			<td>East<input type = "text" size = "20" id = "connectedEast"/></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>South<input type = "text" size = "20" id = "connectedSouth"/></td>
+			<td></td>
+			<td>Down<input type = "text" size = "20" id = "connectedDown"/></td>
+		</tr>
+	</table>
+    </div>
+
+    <div>
+      <input type = "submit" value = "Create Room">
+    </div>
+  {{/if}}
 </template>
