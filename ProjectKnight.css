@@ -2,3 +2,23 @@
 .selectedRoom {
 	background-color: #81DAF5;
 }
+
+#playerPanel {
+	padding-left: 50px;
+	font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+    line-height:20px;
+    background-color:#eeeeee;
+    height:700px;
+    width:48%;
+    float:left;
+    padding:5px; 
+    background-image: url(images/blankbookpageright.jpg);
+}
+
+#builderPanel {
+    line-height:30px;
+    background-color:#eeeeee;
+    width:49%;
+    float:right;
+    padding:5px; 
+}
