@@ -4,11 +4,12 @@ Rooms = new Meteor.Collection('rooms');
 
 
 if (Meteor.isClient) {
-//write a helper on the formtemplate to check if userId matches builder Id
+
+
   Template.addRoom.isBuilder = function(){//helper function to validate if user has Builder status
     var currentUser = Meteor.userId();
     var builder = "8efHNS9m83oJcQCSx";//need to move the ID to a server method, and call the ID from client.
-    if (currentUser === builder){
+    if (currentUser === builder){ //change it to do an email match isntead of ID, because ID will change when deployed to the cloud
       return true;
     } else{
       return false;
@@ -84,9 +85,10 @@ if (Meteor.isClient) {
     }
   });
 
-
+  
   Template.addRoom.events({
     'submit form': function(theEvent,theTemplate){
+       theEvent.preventDefault();
       var roomTitleText = theTemplate.find('#roomTitle').value;
       var roomDescText = theTemplate.find('#roomDesc').value;
       var roomContentsText = theTemplate.find('#roomContents').value;
@@ -99,20 +101,6 @@ if (Meteor.isClient) {
       var connectedDownText = theTemplate.find('#connectedDown').value;
 
       var selectedRoom = Session.get('selectedRoom');
-
-
-      theEvent.preventDefault();
-
-      console.log(roomTitleText);
-      console.log(roomDescText);
-      console.log(roomContentsText);
-      console.log(roomEventsText);
-      console.log(connectedNorthText);
-      console.log(connectedUpText);
-      console.log(connectedWestText);
-      console.log(connectedEastText);
-      console.log(connectedSouthText);
-      console.log(connectedDownText);
 
       Rooms.update(
         {_id: selectedRoom},
