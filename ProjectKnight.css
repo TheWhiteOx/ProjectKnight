@@ -1,1 +1,4 @@
 /* CSS declarations go here */
+.selectedRoom {
+	background-color: #81DAF5;
+}
