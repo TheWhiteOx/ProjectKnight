@@ -82,7 +82,55 @@ if (Meteor.isClient) {
       Session.set('selectedRoom',roomId);
       
     }
+  });
 
+
+  Template.addRoom.events({
+    'submit form': function(theEvent,theTemplate){
+      var roomTitleText = theTemplate.find('#roomTitle').value;
+      var roomDescText = theTemplate.find('#roomDesc').value;
+      var roomContentsText = theTemplate.find('#roomContents').value;
+      var roomEventsText = theTemplate.find('#roomEvents').value;
+      var connectedNorthText = theTemplate.find('#connectedNorth').value;
+      var connectedUpText = theTemplate.find('#connectedUp').value;
+      var connectedWestText = theTemplate.find('#connectedWest').value;
+      var connectedEastText = theTemplate.find('#connectedEast').value;
+      var connectedSouthText = theTemplate.find('#connectedSouth').value;
+      var connectedDownText = theTemplate.find('#connectedDown').value;
+
+      var selectedRoom = Session.get('selectedRoom');
+
+
+      theEvent.preventDefault();
+
+      console.log(roomTitleText);
+      console.log(roomDescText);
+      console.log(roomContentsText);
+      console.log(roomEventsText);
+      console.log(connectedNorthText);
+      console.log(connectedUpText);
+      console.log(connectedWestText);
+      console.log(connectedEastText);
+      console.log(connectedSouthText);
+      console.log(connectedDownText);
+
+      Rooms.update(
+        {_id: selectedRoom},
+          {$set: {roomDesc: roomDescText,
+                  roomTitle: roomTitleText,
+                  roomContents: roomContentsText,
+                  roomEvents: roomEventsText,
+                  connectedNorth: connectedNorthText,
+                  connectedUp: connectedUpText,
+                  connectedWest: connectedWestText,
+                  connectedEast: connectedEastText,
+                  connectedSouth: connectedSouthText,
+                  connectedDown: connectedDownText 
+                }
+          }
+        );
+     
+    }
   });
 
 

@@ -72,7 +72,7 @@
 
 <template name = "addRoom">
 	{{#if isBuilder}}
-	<form>
+	<form id = "addRoom">
 	<div>Room Title
       <input type = "text" size = "50" id = "roomTitle" value = "{{roomTitlePrefill}}" />
     </div>
@@ -92,32 +92,33 @@
     <br>
 
     <div>
-    	 <h3>Rooms to Connect To (enter roomId):</h3>
 
-    	<table id = "connectedTo">
-		<tr>
-			<td></td>
-			<td>North<input type = "text" size = "20" id = "connectedNorth" value = "{{connectedNorthPrefill}}"/></td>
-			<td></td>
-			<td>Up<input type = "text" size = "20" id = "connectedUp" value = "{{connectedUpPrefill}}"/></td>
-		</tr>
-		<tr>
-			<td>West<input type = "text" size = "20" id = "connectedWest" value = "{{connectedWestPrefill}}"/></td>
-			<td>--O--</td>
-			<td>East<input type = "text" size = "20" id = "connectedEast" value = "{{connectedEastPrefill}}"/></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td>South<input type = "text" size = "20" id = "connectedSouth" value = "{{connectedSouthPrefill}}"/></td>
-			<td></td>
-			<td>Down<input type = "text" size = "20" id = "connectedDown" value = "{{connectedDownPrefill}}"/></td>
-		</tr>
+	 <h3>Rooms to Connect To (enter roomId):</h3>
+
+	<table id = "connectedTo">
+	<tr>
+		<td></td>
+		<td>North<input type = "text" size = "20" id = "connectedNorth" value = "{{connectedNorthPrefill}}"/></td>
+		<td></td>
+		<td>Up<input type = "text" size = "20" id = "connectedUp" value = "{{connectedUpPrefill}}"/></td>
+	</tr>
+	<tr>
+		<td>West<input type = "text" size = "20" id = "connectedWest" value = "{{connectedWestPrefill}}"/></td>
+		<td>--O--</td>
+		<td>East<input type = "text" size = "20" id = "connectedEast" value = "{{connectedEastPrefill}}"/></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>South<input type = "text" size = "20" id = "connectedSouth" value = "{{connectedSouthPrefill}}"/></td>
+		<td></td>
+		<td>Down<input type = "text" size = "20" id = "connectedDown" value = "{{connectedDownPrefill}}"/></td>
+	</tr>
 	</table>
     </div>
 
     <div>
-      <input type = "submit" value = "Create Room">
+      <input class = "updateRoom" type = "submit" value = "Update Room">
     </div>
    </form>
 
@@ -129,9 +130,17 @@
 
 
 <template name = "roomList">
+
+	<ul>
+     	<li class = "roomSelect {{selectedRoom}}">Click here for new room.</li>
+     </ul>
+     
 {{#each listRooms}}
     <ul>
     <li class ="roomSelect {{selectedRoom}}">Room: [{{roomTitle}}] ----------- ID: [{{_id}}]</li>
     </ul>
   {{/each}}
+ 
+     
+ 
 </template>
