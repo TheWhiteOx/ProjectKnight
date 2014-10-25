@@ -148,17 +148,13 @@
 
 
 <template name = "roomList">
-
 	<ul>
      	<li class = "roomSelect {{selectedRoom}}">Click here for new room.</li>
      </ul>
      
-{{#each listRooms}}
+	{{#each listRooms}}
     <ul>
     <li class ="roomSelect {{selectedRoom}}">Room: [{{roomTitle}}] ----------- ID: [{{_id}}]</li>
     </ul>
-  {{/each}}
- 
-     
- 
+  	{{/each}}
 </template>

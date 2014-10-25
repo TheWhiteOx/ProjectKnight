@@ -9,10 +9,13 @@ Rooms = new Meteor.Collection('rooms');
 if (Meteor.isClient) {
 
 
+
   Template.addRoom.isBuilder = function(){//helper function to validate if user has Builder status
-    var currentUser = Meteor.userId();
-    var builder = "8efHNS9m83oJcQCSx";//need to move the ID to a server method, and call the ID from client.
-    if (currentUser === builder){ //change it to do an email match isntead of ID, because ID will change when deployed to the cloud
+    var currentUserEmail = Meteor.user().emails[0].address;
+      console.log(currentUserEmail);
+    var builderEmail = 'builder@builder.com';//need to move the ID to a server method, and call the ID from client.
+      console.log(builderEmail);
+    if (currentUserEmail === builderEmail){ //change it to do an email match isntead of ID, because ID will change when deployed to the cloud
       return true;
     } else{
       return false;
