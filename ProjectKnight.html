@@ -117,26 +117,25 @@
 	<tr>
 		<td></td>
 		<td>North<br><input type = "text" size = "17" id = "connectedNorth" value = "{{connectedNorthPrefill}}"/></td>
-		<td></td>
 		<td>Up<br><input type = "text" size = "17" id = "connectedUp" value = "{{connectedUpPrefill}}"/></td>
 	</tr>
 	<tr>
 		<td>West<br><input type = "text" size = "17" id = "connectedWest" value = "{{connectedWestPrefill}}"/></td>
 		<td></td>
 		<td>East<br><input type = "text" size = "17" id = "connectedEast" value = "{{connectedEastPrefill}}"/></td>
-		<td></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td>South<br><input type = "text" size = "17" id = "connectedSouth" value = "{{connectedSouthPrefill}}"/></td>
-		<td></td>
 		<td>Down<br><input type = "text" size = "17" id = "connectedDown" value = "{{connectedDownPrefill}}"/></td>
 	</tr>
 	</table>
     </div>
 
     <div>
-      <input class = "updateRoom" type = "submit" value = "Update Room">
+      <input class = "updateRoom" type = "submit" value = "Update or Add Room">
+      &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+      <input type='button' id ='deleteRoom' value = 'Delete Room'/>
     </div>
    </form>
 
@@ -149,7 +148,8 @@
 
 <template name = "roomList">
 	<ul>
-     	<li class = "roomSelect {{selectedRoom}}">Click here for new room.</li>
+     	<li class = "roomSelect {{selectedRoom}}">Click here for new room.
+     	</li>
      </ul>
      
 	{{#each listRooms}}

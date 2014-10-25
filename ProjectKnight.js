@@ -12,10 +12,8 @@ if (Meteor.isClient) {
 
   Template.addRoom.isBuilder = function(){//helper function to validate if user has Builder status
     var currentUserEmail = Meteor.user().emails[0].address;
-      console.log(currentUserEmail);
     var builderEmail = 'builder@builder.com';//need to move the ID to a server method, and call the ID from client.
-      console.log(builderEmail);
-    if (currentUserEmail === builderEmail){ //change it to do an email match isntead of ID, because ID will change when deployed to the cloud
+    if (currentUserEmail === builderEmail){ 
       return true;
     } else{
       return false;
@@ -91,8 +89,10 @@ if (Meteor.isClient) {
     }
   });
 
+
   
   Template.addRoom.events({
+
     'submit form': function(theEvent,theTemplate){
        theEvent.preventDefault();
       var roomTitleText = theTemplate.find('#roomTitle').value;
@@ -108,23 +108,45 @@ if (Meteor.isClient) {
 
       var selectedRoom = Session.get('selectedRoom');
 
-      Rooms.update(
-        {_id: selectedRoom},
-          {$set: {roomDesc: roomDescText,
-                  roomTitle: roomTitleText,
-                  roomContents: roomContentsText,
-                  roomEvents: roomEventsText,
-                  connectedNorth: connectedNorthText,
-                  connectedUp: connectedUpText,
-                  connectedWest: connectedWestText,
-                  connectedEast: connectedEastText,
-                  connectedSouth: connectedSouthText,
-                  connectedDown: connectedDownText 
+          if (Session.get('selectedRoom') !== undefined){
+            Rooms.update(
+              {_id: selectedRoom},
+                {$set: {roomDesc: roomDescText,
+                        roomTitle: roomTitleText,
+                        roomContents: roomContentsText,
+                        roomEvents: roomEventsText,
+                        connectedNorth: connectedNorthText,
+                        connectedUp: connectedUpText,
+                        connectedWest: connectedWestText,
+                        connectedEast: connectedEastText,
+                        connectedSouth: connectedSouthText,
+                        connectedDown: connectedDownText 
+                      }
                 }
-          }
-        );
+              );
+          } else {
+            Rooms.insert({
+              roomDesc: roomDescText,
+              roomTitle: roomTitleText,
+              roomContents: roomContentsText,
+              roomEvents: roomEventsText,
+              connectedNorth: connectedNorthText,
+              connectedUp: connectedUpText,
+              connectedWest: connectedWestText,
+              connectedEast: connectedEastText,
+              connectedSouth: connectedSouthText,
+              connectedDown: connectedDownText
+            });
+          };
      
+    },  
+
+    'click #deleteRoom': function(){
+      console.log('Deleting ' + Session.get('selectedRoom'))
+      Rooms.remove(Session.get('selectedRoom'));
     }
+
+
   });
 
 
