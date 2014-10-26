@@ -73,6 +73,18 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
     return Rooms.findOne({_id: selectedRoom}, {connectedDown: 1}).connectedDown
   };
 
+//helper functions to populate player panel with room that user is in
+  Template.roomTitle.roomTitleGet = function(){
+      var currentUser = Meteor.userId();
+      var roomIn = Meteor.users.findOne({_id: currentUser}, {'profile.roomIn': 1}).profile.roomIn;
+      return Rooms.findOne({_id: roomIn}, {roomTitle: 1}).roomTitle;
+  };
+  Template.roomDesc.roomDescGet = function(){
+      var currentUser = Meteor.userId();
+      var roomIn = Meteor.users.findOne({_id: currentUser}, {'profile.roomIn': 1}).profile.roomIn;
+      return Rooms.findOne({_id: roomIn}, {roomDesc: 1}).roomDesc;
+  };
+
 
 
 //helper function to generate list of rooms
@@ -97,7 +109,58 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
     'click li.roomSelect': function(){
       var roomId = this._id;
       Session.set('selectedRoom',roomId);
-      
+    }
+  });
+
+  //event that clicks compass to changes roomIn of player
+  Template.compass.events({
+    'click td.north': function(){
+     var currentUser = Meteor.userId();
+     var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+     if (!roomIn){return console.log('Alas, you cannot go that way.');};
+     var roomNorth = Rooms.findOne({_id: roomIn},{connectedNorth: 1}).connectedNorth;
+     if (!roomNorth){return console.log('Alas, you cannot go that way.');};
+     Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomNorth}});
+    },
+    'click td.south': function(){
+     var currentUser = Meteor.userId();
+     var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+     if (!roomIn){return console.log('Alas, you cannot go that way.');};
+     var roomSouth = Rooms.findOne({_id: roomIn},{connectedSouth: 1}).connectedSouth;
+     if (!roomSouth){return console.log('Alas, you cannot go that way.');};
+     Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomSouth}});
+    },
+    'click td.west': function(){
+     var currentUser = Meteor.userId();
+     var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+     if (!roomIn){return console.log('Alas, you cannot go that way.');};
+     var roomWest = Rooms.findOne({_id: roomIn},{connectedWest: 1}).connectedWest;
+     if (!roomWest){return console.log('Alas, you cannot go that way.');};
+     Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomWest}});
+    },
+    'click td.east': function(){
+     var currentUser = Meteor.userId();
+     var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+     if (!roomIn){return console.log('Alas, you cannot go that way.');};
+     var roomEast = Rooms.findOne({_id: roomIn},{connectedEast: 1}).connectedEast;
+     if (!roomEast){return console.log('Alas, you cannot go that way.');};
+     Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomEast}});
+    },
+    'click td.up': function(){
+     var currentUser = Meteor.userId();
+     var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+     if (!roomIn){return console.log('Alas, you cannot go that way.');};
+     var roomUp = Rooms.findOne({_id: roomIn},{connectedUp: 1}).connectedUp;
+     if (!roomUp){return console.log('Alas, you cannot go that way.');};
+     Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomUp}});
+    },
+    'click td.down': function(){
+     var currentUser = Meteor.userId();
+     var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+     if (!roomIn){return console.log('Alas, you cannot go that way.');};
+     var roomDown = Rooms.findOne({_id: roomIn},{connectedDown: 1}).connectedDown;
+     if (!roomDown){return console.log('Alas, you cannot go that way.');};
+     Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomDown}});
     }
   });
 
@@ -186,3 +249,9 @@ if (Meteor.isServer) {
 
 
 };
+
+//code to update users profile
+// Meteor.users.update({_id:Meteor.userId()}, { $set:{'profile.roomIn':'3fHgRHFe9NhCQGXdc'}} )
+
+//code to retreive room position that user is in
+//Meteor.users.findOne({_id: Meteor.userId()}, {'profile.roomIn': 1}).profile.roomIn;

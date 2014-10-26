@@ -45,11 +45,11 @@
 
 <!--****TEMPLATES FROM HERE ON DOWN****TO BE MIGRATED TO SEPERATE FILES LATER-->
 <template name = "roomTitle">
-	<h2>Room Title Goes Here</h2>
+	<h2>{{roomTitleGet}}</h2>
 </template>
 
 <template name = "roomDesc">
-	Description of the room is here.  Describing the room and setting.  The room description is mostly static and just sets the atmosphere of the game. More filler more filler more filler more filler.  The trees stand like guardians towering atop you.
+	{{roomDescGet}}
 </template>
 
 
@@ -71,21 +71,21 @@
 	<table>
 		<tr>
 			<td></td>
-			<td>North</td>
+			<td class="north">North</td>
 			<td></td>
-			<td>Up</td>
+			<td class="up">Up</td>
 		</tr>
 		<tr>
-			<td>West</td>
+			<td class ="west">West</td>
 			<td>--O--</td>
-			<td>East</td>
+			<td class="east">East</td>
 			<td></td>
 		</tr>
 		<tr>
 			<td></td>
-			<td>South</td>
+			<td class ="south">South</td>
 			<td></td>
-			<td>Down</td>
+			<td class ="down">Down</td>
 		</tr>
 	</table>
 </template>
