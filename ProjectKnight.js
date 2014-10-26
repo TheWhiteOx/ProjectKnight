@@ -109,7 +109,13 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
     'click li.roomSelect': function(){
       var roomId = this._id;
       Session.set('selectedRoom',roomId);
+    },
+    'click li.teleportTo': function(){
+      var selectedRoom = Session.get('selectedRoom');
+      var currentUser = Meteor.userId();
+      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn':selectedRoom}});
     }
+
   });
 
   //event that clicks compass to changes roomIn of player
@@ -163,6 +169,8 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomDown}});
     }
   });
+
+  
 
 
   
@@ -241,10 +249,25 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
 
 
 
-//Server stuff from here down
+//Server stuff from here down!
 
 if (Meteor.isServer) {
-  
+
+  Meteor.startup(function () {
+
+    //need to find a way to find the builder _id by querying his e-mail.  
+    //then changing his roomIn field to Origin of light upon startup.
+    
+    var hasOrigin = Rooms.findOne({roomTitle: 'Origin of Light'});
+   if (!hasOrigin){
+     Rooms.insert({
+              roomTitle: 'Origin of Light',
+              roomDesc: 'You stand at the edge of all creation.  Light in a multitude of directions stream through, solidifying into proto shapes that keep shifting, waiting for you to direct it.'
+            });
+    }
+ 
+
+  });
 
 
 

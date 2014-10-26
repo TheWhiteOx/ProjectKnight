@@ -37,7 +37,10 @@ li.roomSelect {
 	line-height:1;
 	list-style-position:outside;
     border: 1px solid black;
-    widht: 100px;
+    
+}
+
+li.teleportTo {
 }
 
 ul {
