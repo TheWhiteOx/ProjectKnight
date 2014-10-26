@@ -16,7 +16,7 @@
  {{> roomDesc}}
  <br>
  <br>
- {{> roomContents}}
+ <!--{{> roomContents}}  //leaving contents out for now -->
  <br>
  <br>
  <br>
@@ -25,6 +25,10 @@
 
 <div id = "builderPanel">
  {{> addRoom}}
+</div>
+
+<div id = "roomListPanel">
+ {{> roomList}}
 </div>
  
 
@@ -138,23 +142,23 @@
       <input type='button' id ='deleteRoom' value = 'Delete Room'/>
     </div>
    </form>
-
-   <br>
-   {{> roomList}}
-  
   {{/if}}
 </template>
 
 
 <template name = "roomList">
+	{{#if isBuilder}}
 	<ul>
-     	<li class = "roomSelect {{selectedRoom}}">Click here for new room.
-     	</li>
+     	<li class = "roomSelect {{selectedRoom}}"><br><center>Click here for new room.</center><br><br></li>	
+     		
      </ul>
      
 	{{#each listRooms}}
     <ul>
-    <li class ="roomSelect {{selectedRoom}}">Room: [{{roomTitle}}] ----------- ID: [{{_id}}]</li>
+    <li class ="roomSelect {{selectedRoom}}">Room: {{roomTitle}}
+    	<p>ID: {{_id}}</p>
+    </li>
     </ul>
   	{{/each}}
+  	{{/if}}
 </template>

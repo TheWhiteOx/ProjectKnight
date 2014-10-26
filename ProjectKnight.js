@@ -20,6 +20,16 @@ if (Meteor.isClient) {
     }
   };
 
+Template.roomList.isBuilder = function(){//helper function to validate if user has Builder status
+    var currentUserEmail = Meteor.user().emails[0].address;
+    var builderEmail = 'builder@builder.com';//need to move the ID to a server method, and call the ID from client.
+    if (currentUserEmail === builderEmail){ 
+      return true;
+    } else{
+      return false;
+    }
+  };
+
   
 //Helper functions for Builder form field prefills
   Template.addRoom.roomTitlePrefill = function(){
@@ -77,6 +87,8 @@ if (Meteor.isClient) {
       return 'selectedRoom';
     }
   };
+
+
 
  
 
@@ -170,4 +182,7 @@ if (Meteor.isClient) {
 
 if (Meteor.isServer) {
   
+
+
+
 };
