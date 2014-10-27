@@ -298,6 +298,18 @@ if (Meteor.isServer) {
   });
 
 
+Accounts.onCreateUser(function(options, user) {
+
+
+user.profile = {roomIn: '3fHgRHFe9NhCQGXdc'};
+console.log(user.profile.roomIn); 
+
+  if (options.profile)
+    user.profile = options.profile;
+return user;
+});
+
+
 
 };
 
