@@ -103,15 +103,28 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
   Template.roomContents.listPlayers = function(){
     var currentRoom = Meteor.user().profile.roomIn;
     var players = Rooms.findOne({_id: currentRoom},{'roomContents.players': 1}).roomContents.players;
-    console.log(players);
+    var showPlayers = [];
+    var playerEmail = ""
+      console.log(players)
+    //todo: convert array of userIds to userEmails and also append their say msg
+    //loop through players array
+    //compare each Id and if it exists, push their e-mail, and the say message to a new array value
+    //if there is no say message or say message is '' then add 'is standing here' at the end.
 
-    //convert array of userIds to userEmails
-    for (var i = 0;i<players;i++){
-      Meteor.users
+    for (var i = 0;i<players.length;i++){
+        playerEmail = Meteor.users.findOne({_id: players[i]},{'emails[0].address': 1}).emails[0].address;
+        if (playerEmail){
+          showPlayers.push(playerEmail);
+        }
+        
+
     }
-    return players;
 
+    console.log(showPlayers);
+    return showPlayers
   };
+
+  
 
 
 
@@ -134,9 +147,11 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
   //deletes userId from the current Room.roomContents.player array.
   var moveTo = function(currentUser,roomIn,roomTo){
     //pushes userId to new room player array
-    Rooms.update({_id: roomTo},{$push:{'roomContents.players': currentUser}})
+    Rooms.update({_id: roomTo},{$push:{'roomContents.players': currentUser}});
     //pull userId from the current room players array
-    Rooms.update({_id: roomIn},{$pull:{'roomContents.players':currentUser}})
+    Rooms.update({_id: roomIn},{$pull:{'roomContents.players':currentUser}});
+    //clears the players say message upon entering a new room
+    Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': undefined}});
   };
 
   //event that clicks compass to changes roomIn of player
@@ -205,7 +220,6 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      var currentUser = Meteor.userId();
      roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
      var roomOrigin = Rooms.findOne({roomTitle: 'Origin of Light'},{_id: 1})._id;
-     
      new Audio('/audio/recall_origin.mp3').play();
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomOrigin}});
      moveTo(currentUser,roomIn,roomOrigin);
@@ -218,7 +232,7 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
   
   Template.addRoom.events({
 
-    'submit form': function(theEvent,theTemplate){
+    'submit form#addRoomForm': function(theEvent,theTemplate){
        theEvent.preventDefault();
       var roomTitleText = theTemplate.find('#roomTitle').value;
       var roomDescText = theTemplate.find('#roomDesc').value;
@@ -273,6 +287,16 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
 
 
   });
+
+Template.chatBox.events({
+  'submit form#chatForm': function(theEvent,theTemplate){
+       theEvent.preventDefault();
+    var chatMsg = theTemplate.find('#chatTextInput').value;
+    var currentUser = Meteor.userId();
+    $('#chatTextInput').val('');
+    Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': chatMsg}});
+  }
+});
 
 
 };

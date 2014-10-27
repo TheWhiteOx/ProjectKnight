@@ -18,6 +18,8 @@
 		<div id="roomContents">{{> roomContents}}</div>
 	
 		<div id="compass"><center>{{> compass}}</center></div>
+
+		<div id="chatBox">{{> chatBox}}</div>
 </div>
 
 
@@ -53,9 +55,13 @@
 
 <template name = "roomContents">
 	{{#each listPlayers}}
-	<div>{{this}} is standing here.</div>
+	<div>{{this}} 
+	</div>
 	{{/each}}
 </template>
+
+
+
 
 <template name = "roomEvents">
 	These are events that happen in the room.  Like players leaving, or objects getting picked up. Or even room events.
@@ -84,11 +90,18 @@
 	</table>
 </template>
 
+<template name = "chatBox">
+	<form id = "chatForm">
+		<input class = "submitChat" type = "submit" value = "Say:">
+		<input type = "text" size = "" style = "width:90%"  id="chatTextInput">
+	</form>
+</template>
+
 
 
 <template name = "addRoom">
 	{{#if isBuilder}}
-	<form id = "addRoom">
+	<form id = "addRoomForm">
 	<div>Room Title<br>
       <input type = "text" size = "45" style = "width:95%" id = "roomTitle" value = "{{roomTitlePrefill}}" />
     </div>

@@ -10,7 +10,7 @@
 	font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
     line-height:20px;
     background-color:#eeeeee;
-    height:675px;
+    height:700px;
     width:40%;
     float:left;
     padding:5px; 
@@ -29,7 +29,11 @@
      }
 
      #compass {
-        height:20%;
+        height:15%;
+     }
+
+     #chatbox {
+        height:7%
      }
 
 
