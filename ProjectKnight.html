@@ -16,7 +16,7 @@
  {{> roomDesc}}
  <br>
  <br>
- <!--{{> roomContents}}  //leaving contents out for now -->
+ {{> roomContents}}
  <br>
  <br>
  <br>
@@ -54,13 +54,9 @@
 
 
 <template name = "roomContents">
-	<ul>
-		<li>Reads the Collection.roomContents array</li>
-		<li>And lists them out here</li>
-		<li>This is reactive also</li>
-		<li>So if items get added or removed</li>
-		<li>This list will reflect that</li>
-	</ul>
+	{{#each listPlayers}}
+	<div>{{this}} is standing here.</div>
+	{{/each}}
 </template>
 
 <template name = "roomEvents">
@@ -104,13 +100,14 @@
       <textarea type = "text" rows = "15" cols = "50" id = "roomDesc" value = "{{roomDescPrefill}}"></textarea>
     </div>
     <br>
-    <div>Room Contents<br>
+   <!-- <div>Room Contents<br>
       <input type = "text" id = "roomContents" value = "{{roomContentsPrefill}}"/>
     </div>
     <br>
     <div> Room Events<br>
       <input type = "text" id = "roomEvents" value = "{{roomEventsPrefill}}"/>
     </div>
+	-->
     <br>
 
     <div>

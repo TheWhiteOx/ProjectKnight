@@ -100,6 +100,13 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
     }
   };
 
+  Template.roomContents.listPlayers = function(){
+    var currentRoom = Meteor.user().profile.roomIn;
+    var players = Rooms.findOne({_id: currentRoom},{'roomContents.players': 1}).roomContents.players;
+    return players;
+
+  };
+
 
 
  
@@ -117,6 +124,14 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
     }
 
   });
+  //function that pushes userId into Room.roomContents.player array and
+  //deletes userId from the current Room.roomContents.player array.
+  var moveTo = function(currentUser,roomIn,roomTo){
+    //pushes userId to new room player array
+    Rooms.update({_id: roomTo},{$push:{'roomContents.players': currentUser}})
+    //pull userId from the current room players array
+    Rooms.update({_id: roomIn},{$pull:{'roomContents.players':currentUser}})
+  };
 
   //event that clicks compass to changes roomIn of player
   Template.compass.events({
@@ -126,7 +141,9 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      if (!roomIn){return console.log('Alas, you cannot go that way.');};
      var roomNorth = Rooms.findOne({_id: roomIn},{connectedNorth: 1}).connectedNorth;
      if (!roomNorth){return console.log('Alas, you cannot go that way.');};
+     new Audio('/audio/forest_footsteps.wav').play();
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomNorth}});
+     moveTo(currentUser,roomIn,roomNorth);
     },
     'click td.south': function(){
      var currentUser = Meteor.userId();
@@ -134,7 +151,9 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      if (!roomIn){return console.log('Alas, you cannot go that way.');};
      var roomSouth = Rooms.findOne({_id: roomIn},{connectedSouth: 1}).connectedSouth;
      if (!roomSouth){return console.log('Alas, you cannot go that way.');};
+     new Audio('/audio/forest_footsteps.wav').play();
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomSouth}});
+     moveTo(currentUser,roomIn,roomSouth);
     },
     'click td.west': function(){
      var currentUser = Meteor.userId();
@@ -142,7 +161,9 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      if (!roomIn){return console.log('Alas, you cannot go that way.');};
      var roomWest = Rooms.findOne({_id: roomIn},{connectedWest: 1}).connectedWest;
      if (!roomWest){return console.log('Alas, you cannot go that way.');};
+     new Audio('/audio/forest_footsteps.wav').play();
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomWest}});
+     moveTo(currentUser,roomIn,roomWest);
     },
     'click td.east': function(){
      var currentUser = Meteor.userId();
@@ -150,7 +171,9 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      if (!roomIn){return console.log('Alas, you cannot go that way.');};
      var roomEast = Rooms.findOne({_id: roomIn},{connectedEast: 1}).connectedEast;
      if (!roomEast){return console.log('Alas, you cannot go that way.');};
+     new Audio('/audio/forest_footsteps.wav').play();
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomEast}});
+     moveTo(currentUser,roomIn,roomEast);
     },
     'click td.up': function(){
      var currentUser = Meteor.userId();
@@ -158,7 +181,9 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      if (!roomIn){return console.log('Alas, you cannot go that way.');};
      var roomUp = Rooms.findOne({_id: roomIn},{connectedUp: 1}).connectedUp;
      if (!roomUp){return console.log('Alas, you cannot go that way.');};
+     new Audio('/audio/forest_footsteps.wav').play();
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomUp}});
+     moveTo(currentUser,roomIn,roomUp);
     },
     'click td.down': function(){
      var currentUser = Meteor.userId();
@@ -166,7 +191,9 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      if (!roomIn){return console.log('Alas, you cannot go that way.');};
      var roomDown = Rooms.findOne({_id: roomIn},{connectedDown: 1}).connectedDown;
      if (!roomDown){return console.log('Alas, you cannot go that way.');};
+     new Audio('/audio/forest_footsteps.wav').play();
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomDown}});
+     moveTo(currentUser,roomIn,roomDown);
     }
   });
 
@@ -180,8 +207,8 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
        theEvent.preventDefault();
       var roomTitleText = theTemplate.find('#roomTitle').value;
       var roomDescText = theTemplate.find('#roomDesc').value;
-      var roomContentsText = theTemplate.find('#roomContents').value;
-      var roomEventsText = theTemplate.find('#roomEvents').value;
+      //var roomContentsText = theTemplate.find('#roomContents').value;
+     //var roomEventsText = theTemplate.find('#roomEvents').value;
       var connectedNorthText = theTemplate.find('#connectedNorth').value;
       var connectedUpText = theTemplate.find('#connectedUp').value;
       var connectedWestText = theTemplate.find('#connectedWest').value;
@@ -196,8 +223,8 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
               {_id: selectedRoom},
                 {$set: {roomDesc: roomDescText,
                         roomTitle: roomTitleText,
-                        roomContents: roomContentsText,
-                        roomEvents: roomEventsText,
+                       // roomContents: roomContentsText,
+                        //roomEvents: roomEventsText,
                         connectedNorth: connectedNorthText,
                         connectedUp: connectedUpText,
                         connectedWest: connectedWestText,
@@ -211,8 +238,8 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
             Rooms.insert({
               roomDesc: roomDescText,
               roomTitle: roomTitleText,
-              roomContents: roomContentsText,
-              roomEvents: roomEventsText,
+              roomContents: {players: []},
+             // roomEvents: roomEventsText,
               connectedNorth: connectedNorthText,
               connectedUp: connectedUpText,
               connectedWest: connectedWestText,
@@ -262,7 +289,8 @@ if (Meteor.isServer) {
    if (!hasOrigin){
      Rooms.insert({
               roomTitle: 'Origin of Light',
-              roomDesc: 'You stand at the edge of all creation.  Light in a multitude of directions stream through, solidifying into proto shapes that keep shifting, waiting for you to direct it.'
+              roomDesc: 'You stand at the edge of all creation.  Light in a multitude of directions stream through, solidifying into proto shapes that keep shifting, waiting for you to direct it.',
+              roomContents: {players: [Meteor.userId()]}
             });
     }
  
