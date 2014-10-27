@@ -104,6 +104,11 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
     var currentRoom = Meteor.user().profile.roomIn;
     var players = Rooms.findOne({_id: currentRoom},{'roomContents.players': 1}).roomContents.players;
     console.log(players);
+
+    //convert array of userIds to userEmails
+    for (var i = 0;i<players;i++){
+      Meteor.users
+    }
     return players;
 
   };
@@ -142,7 +147,7 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      if (!roomIn){return console.log('Alas, you cannot go that way.');};
      var roomNorth = Rooms.findOne({_id: roomIn},{connectedNorth: 1}).connectedNorth;
      if (!roomNorth){return console.log('Alas, you cannot go that way.');};
-     new Audio('/audio/forest_footsteps.wav').play();
+     new Audio('/audio/forest_footsteps.mp3').play();
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomNorth}});
      moveTo(currentUser,roomIn,roomNorth);
     },
@@ -152,7 +157,7 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      if (!roomIn){return console.log('Alas, you cannot go that way.');};
      var roomSouth = Rooms.findOne({_id: roomIn},{connectedSouth: 1}).connectedSouth;
      if (!roomSouth){return console.log('Alas, you cannot go that way.');};
-     new Audio('/audio/forest_footsteps.wav').play();
+     new Audio('/audio/forest_footsteps.mp3').play();
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomSouth}});
      moveTo(currentUser,roomIn,roomSouth);
     },
@@ -162,7 +167,7 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      if (!roomIn){return console.log('Alas, you cannot go that way.');};
      var roomWest = Rooms.findOne({_id: roomIn},{connectedWest: 1}).connectedWest;
      if (!roomWest){return console.log('Alas, you cannot go that way.');};
-     new Audio('/audio/forest_footsteps.wav').play();
+     new Audio('/audio/forest_footsteps.mp3').play();
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomWest}});
      moveTo(currentUser,roomIn,roomWest);
     },
@@ -172,7 +177,7 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      if (!roomIn){return console.log('Alas, you cannot go that way.');};
      var roomEast = Rooms.findOne({_id: roomIn},{connectedEast: 1}).connectedEast;
      if (!roomEast){return console.log('Alas, you cannot go that way.');};
-     new Audio('/audio/forest_footsteps.wav').play();
+     new Audio('/audio/forest_footsteps.mp3').play();
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomEast}});
      moveTo(currentUser,roomIn,roomEast);
     },
@@ -182,7 +187,7 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      if (!roomIn){return console.log('Alas, you cannot go that way.');};
      var roomUp = Rooms.findOne({_id: roomIn},{connectedUp: 1}).connectedUp;
      if (!roomUp){return console.log('Alas, you cannot go that way.');};
-     new Audio('/audio/forest_footsteps.wav').play();
+     new Audio('/audio/forest_footsteps.mp3').play();
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomUp}});
      moveTo(currentUser,roomIn,roomUp);
     },
@@ -192,10 +197,19 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
      if (!roomIn){return console.log('Alas, you cannot go that way.');};
      var roomDown = Rooms.findOne({_id: roomIn},{connectedDown: 1}).connectedDown;
      if (!roomDown){return console.log('Alas, you cannot go that way.');};
-     new Audio('/audio/forest_footsteps.wav').play();
+     new Audio('/audio/forest_footsteps.mp3').play();
      Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomDown}});
      moveTo(currentUser,roomIn,roomDown);
-    }
+    },
+    'click td.origin': function(){
+     var currentUser = Meteor.userId();
+     roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+     var roomOrigin = Rooms.findOne({roomTitle: 'Origin of Light'},{_id: 1})._id;
+     
+     new Audio('/audio/recall_origin.mp3').play();
+     Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomOrigin}});
+     moveTo(currentUser,roomIn,roomOrigin);
+    } 
   });
 
   
