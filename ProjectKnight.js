@@ -103,6 +103,7 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
   Template.roomContents.listPlayers = function(){
     var currentRoom = Meteor.user().profile.roomIn;
     var players = Rooms.findOne({_id: currentRoom},{'roomContents.players': 1}).roomContents.players;
+    console.log(players);
     return players;
 
   };
@@ -300,8 +301,8 @@ if (Meteor.isServer) {
 
 Accounts.onCreateUser(function(options, user) {
 
-
-user.profile = {roomIn: '3fHgRHFe9NhCQGXdc'};
+startRoom = Rooms.findOne({roomTitle: 'Under A Giant Fig Tree'},{_id: 1})._id;
+user.profile = {roomIn: startRoom};
 console.log(user.profile.roomIn); 
 
   if (options.profile)

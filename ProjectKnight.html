@@ -7,28 +7,26 @@
 
 
 <div id = "playerPanel">
- {{> loginButtons}}
- <br>
- <br>
- <br>
- <center>{{> roomTitle}}</center>
- <br>
- {{> roomDesc}}
- <br>
- <br>
- {{> roomContents}}
- <br>
- <br>
- <br>
-<center> {{> compass}}</center>
+	{{> loginButtons}}
+	<br>
+	<br>
+	<br>
+		<div id="roomTitle"><center>{{> roomTitle}}</center></div>
+	
+		<div id="roomDesc">{{> roomDesc}}</div>
+	
+		<div id="roomContents">{{> roomContents}}</div>
+	
+		<div id="compass"><center>{{> compass}}</center></div>
 </div>
+
 
 <div id = "builderPanel">
- {{> addRoom}}
-</div>
+	{{> addRoom}}
+	</div>
 
-<div id = "roomListPanel">
- {{> roomList}}
+	<div id = "roomListPanel">
+	{{> roomList}}
 </div>
  
 
@@ -92,12 +90,12 @@
 	{{#if isBuilder}}
 	<form id = "addRoom">
 	<div>Room Title<br>
-      <input type = "text" size = "50" id = "roomTitle" value = "{{roomTitlePrefill}}" />
+      <input type = "text" size = "45" style = "width:95%" id = "roomTitle" value = "{{roomTitlePrefill}}" />
     </div>
     <br>
 
     <div>Room Description<br>
-      <textarea type = "text" rows = "15" cols = "50" id = "roomDesc" value = "{{roomDescPrefill}}"></textarea>
+      <textarea type = "text" rows = "15" cols = "" style = "width:95%" id = "roomDesc" value = "{{roomDescPrefill}}"></textarea>
     </div>
     <br>
    <!-- <div>Room Contents<br>
@@ -114,21 +112,21 @@
 
 	 <h3>Rooms to Connect To (enter roomId):</h3>
 
-	<table id = "connectedTo">
+	<table id = "connectedTo" style = "width:95%">
 	<tr>
 		<td></td>
-		<td>North<br><input type = "text" size = "17" id = "connectedNorth" value = "{{connectedNorthPrefill}}"/></td>
-		<td>Up<br><input type = "text" size = "17" id = "connectedUp" value = "{{connectedUpPrefill}}"/></td>
+		<td>North<br><input type = "text" size = "" style = "width:95%" id = "connectedNorth" value = "{{connectedNorthPrefill}}"/></td>
+		<td>Up<br><input type = "text" size = "" id = "connectedUp" value = "{{connectedUpPrefill}}"/></td>
 	</tr>
 	<tr>
-		<td>West<br><input type = "text" size = "17" id = "connectedWest" value = "{{connectedWestPrefill}}"/></td>
+		<td>West<br><input type = "text" size = "" style = "width:95%" id = "connectedWest" value = "{{connectedWestPrefill}}"/></td>
 		<td></td>
-		<td>East<br><input type = "text" size = "17" id = "connectedEast" value = "{{connectedEastPrefill}}"/></td>
+		<td>East<br><input type = "text" size = "" style = "width:95%"  id = "connectedEast" value = "{{connectedEastPrefill}}"/></td>
 	</tr>
 	<tr>
 		<td></td>
-		<td>South<br><input type = "text" size = "17" id = "connectedSouth" value = "{{connectedSouthPrefill}}"/></td>
-		<td>Down<br><input type = "text" size = "17" id = "connectedDown" value = "{{connectedDownPrefill}}"/></td>
+		<td>South<br><input type = "text" size = "" style = "width:95%"  id = "connectedSouth" value = "{{connectedSouthPrefill}}"/></td>
+		<td>Down<br><input type = "text" size = "" style = "width:95%"  id = "connectedDown" value = "{{connectedDownPrefill}}"/></td>
 	</tr>
 	</table>
     </div>
