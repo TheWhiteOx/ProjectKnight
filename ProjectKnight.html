@@ -2,11 +2,12 @@
   <title>ProjectKnight</title>
 </head>
 <body>
- 
+ {{>loginButtons}}
 
 
-
+{{#if currentUser}}
 <div id = "playerPanel">
+	
 	{{> loginButtons}}
 	<br>
 	<br>
@@ -30,6 +31,9 @@
 	<div id = "roomListPanel">
 	{{> roomList}}
 </div>
+{{else}}
+<div id = "loginTitle">{{> loginTitle}}</div>
+{{/if}}	
  
 
 </body>
@@ -50,7 +54,11 @@ Close Book
 
 
 <template name = "loginTitle">
-<center><h1>Origins</h1></center>
+<center><h1><br><br><br>Origins</h1></center>
+<form id = "loginTitlePage">
+<div><center>Written By:</center><input type = "text" id = "userEmail" value = "Enter Your Email"></div>
+<div><input type = "text" id = "userPassword" value = "Set Your Password"></div>
+</form>
 </template>
 
 <template name = "roomTitle">
@@ -112,6 +120,10 @@ Close Book
 </template>
 
 
+
+
+
+<!-- BUILDER TEMPLATES FROM HERE DOWN -->
 
 <template name = "addRoom">
 	{{#if isBuilder}}
