@@ -8,6 +8,16 @@ Rooms = new Meteor.Collection('rooms');
 
 if (Meteor.isClient) {
 
+  //allows handlebars #each to take in objects
+  Handlebars.registerHelper('arrayify',function(obj){
+    result = [];
+    for (var key in obj) result.push({name:key,value:obj[key]});
+    return result;
+  });
+
+  //tempoerarily subscribing to all user account info on the client.**INSECURE**
+  Meteor.subscribe('allUsers');
+
 
 
   Template.addRoom.isBuilder = function(){//helper function to validate if user has Builder status
@@ -100,34 +110,39 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
     }
   };
 
+
+  //lists players in the room and their messages
   Template.roomContents.listPlayers = function(){
-    var currentRoom = Meteor.user().profile.roomIn;
-    var players = Rooms.findOne({_id: currentRoom},{'roomContents.players': 1}).roomContents.players;
-    var showPlayers = [];
-    var playerEmail = ""
-      console.log(players)
-    //todo: convert array of userIds to userEmails and also append their say msg
-    //loop through players array
-    //compare each Id and if it exists, push their e-mail, and the say message to a new array value
-    //if there is no say message or say message is '' then add 'is standing here' at the end.
+    var playerMap = {};
+    var currentUser = Meteor.userId();
+    var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+    var playerList = Rooms.findOne({_id: roomIn},{'roomContents.players':1}).roomContents.players;
+    //create new key value map with email and say message
+    //var email = Meteor.users.findOne({_id: currentUser},{'emails[0].address':1}).emails[0].address;
+    //var sayMsg = Meteor.users.findOne({_id: currentUser},{'profile.sayMsg': 1}).profile.sayMsg;
+      for (var i = 0;i<playerList.length;i++){
+        playerMap[Meteor.users.findOne({_id: playerList[i]},{'emails[0].address':1}).emails[0].address] = 
+        Meteor.users.findOne({_id: playerList[i]},{'profile.sayMsg': 1}).profile.sayMsg
+      };
 
-    for (var i = 0;i<players.length;i++){
-        playerEmail = Meteor.users.findOne({_id: players[i]},{'emails[0].address': 1}).emails[0].address;
-        if (playerEmail){
-          showPlayers.push(playerEmail);
-        }
-        
 
-    }
-
-    console.log(showPlayers);
-    return showPlayers
+    return playerMap;
+    
   };
 
   
 
-
-
+  //event that detects clicking of logout button
+  Template.loginButtons.events({
+    'click #login-buttons-logout': function() {
+      console.log('testlogout');
+     var currentUser = Meteor.userId();
+     console.log(currentUser);
+     var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+     console.log(roomIn);
+     Rooms.update({_id: roomIn},{$pull:{'roomContents.players':currentUser}});
+    }
+  });
  
 
   //event that selects room in builder panel
@@ -294,7 +309,13 @@ Template.chatBox.events({
     var chatMsg = theTemplate.find('#chatTextInput').value;
     var currentUser = Meteor.userId();
     $('#chatTextInput').val('');
-    Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': chatMsg}});
+    Session.set('emote','says, '+ '\"'+chatMsg+'.\"');
+    var emote = Session.get('emote');
+    var setStand = Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
+    Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': emote}});
+    Meteor.setTimeout(function(){
+      Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}})
+    },10000);
   }
 });
 
@@ -321,9 +342,7 @@ if (Meteor.isServer) {
 
   Meteor.startup(function () {
 
-    //need to find a way to find the builder _id by querying his e-mail.  
-    //then changing his roomIn field to Origin of light upon startup.
-    
+    //Checks if Origin room has been created upon startup, if not, it creates one.
     var hasOrigin = Rooms.findOne({roomTitle: 'Origin of Light'});
    if (!hasOrigin){
      Rooms.insert({
@@ -332,22 +351,25 @@ if (Meteor.isServer) {
               roomContents: {players: [Meteor.userId()]}
             });
     }
- 
-
   });
 
+//sets a new account location to Under A Giant Fig Tree room
+  Accounts.onCreateUser(function(options, user) {
+  startRoom = Rooms.findOne({roomTitle: 'Under A Giant Fig Tree'},{_id: 1})._id;
+  user.profile = {
+    roomIn: startRoom,
+    sayMsg: 'is standing here'
+  };
+  console.log(user.profile.roomIn); 
 
-Accounts.onCreateUser(function(options, user) {
+    if (options.profile)
+      user.profile = options.profile;
+  return user;
+  });
 
-startRoom = Rooms.findOne({roomTitle: 'Under A Giant Fig Tree'},{_id: 1})._id;
-user.profile = {roomIn: startRoom};
-console.log(user.profile.roomIn); 
-
-  if (options.profile)
-    user.profile = options.profile;
-return user;
-});
-
+  Meteor.publish('allUsers',function(){
+      return Meteor.users.find({});
+  });
 
 
 };

@@ -44,6 +44,15 @@
 
 
 <!--****TEMPLATES FROM HERE ON DOWN****TO BE MIGRATED TO SEPERATE FILES LATER-->
+<template name = "logout">
+Close Book
+</template>
+
+
+<template name = "loginTitle">
+<center><h1>Origins</h1></center>
+</template>
+
 <template name = "roomTitle">
 	<h2>{{roomTitleGet}}</h2>
 </template>
@@ -54,8 +63,8 @@
 
 
 <template name = "roomContents">
-	{{#each listPlayers}}
-	<div>{{this}} 
+	{{#each arrayify listPlayers}}
+	<div>{{name}} {{value}}
 	</div>
 	{{/each}}
 </template>
