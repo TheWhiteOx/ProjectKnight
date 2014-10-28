@@ -130,7 +130,34 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
     
   };
 
-  
+  //Title Login form and new user event handler
+  Template.loginTitle.events({
+      'submit #loginTitlePage': function(theEvent, theTemplate){
+        theEvent.preventDefault();
+        var email = theTemplate.find('#userEmail').value;
+        var password = theTemplate.find('#userPassword').value;
+
+        Meteor.loginWithPassword(email,password,function(err){
+          if (err){
+            console.log('User doesn\'t exist.  Creating a new user.');
+            
+                          Accounts.createUser({email: email, password: password},
+                            function(err){
+                              if (err){
+                                console.log("Error creating new user.");
+                              } else {
+                                console.log("Success! New user created.");
+                              }
+                           });
+          } else {
+            console.log(email + " is logged in!");
+          };      
+
+        });
+      
+      }
+
+  });
 
   //event that detects clicking of logout button
   Template.loginButtons.events({

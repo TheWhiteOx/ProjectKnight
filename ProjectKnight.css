@@ -46,6 +46,11 @@ input#userPassword {
     background-image: url(images/blankbookpageright.jpg);
 }
 
+#loginTitleDiv {
+    position: relative;
+    top: 30%;
+}
+
 }
      #roomTitle {
         height:10%
@@ -120,3 +125,7 @@ td.origin {
 }
 
 
+
+input.placeholder {
+    text-align: center;
+}

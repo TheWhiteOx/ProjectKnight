@@ -54,11 +54,16 @@ Close Book
 
 
 <template name = "loginTitle">
-<center><h1><br><br><br>Origins</h1></center>
-<form id = "loginTitlePage">
-<div><center>Written By:</center><input type = "text" id = "userEmail" value = "Enter Your Email"></div>
-<div><input type = "text" id = "userPassword" value = "Set Your Password"></div>
-</form>
+	<div id = "loginTitleDiv">
+	<center><h1 style ="font-size: 350%"><br><br><br>Origins</h1></center><br><br><br>
+	<form id = "loginTitlePage">
+		<div><center>Written By:</center></div><br>
+		<div><center></center><input type = "text" id = "userEmail" placeholder = "Email"></div><br>
+
+		<div><input type = "text" id = "userPassword" placeholder = "Password"></div>
+		<div><center><input type = "submit" id = "login-button" value = "Begin Reading"></center></div>
+	</form>
+	</div>
 </template>
 
 <template name = "roomTitle">
