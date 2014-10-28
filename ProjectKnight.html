@@ -77,33 +77,38 @@ Close Book
 </template>
 
 <template name = "compass">
-	<table>
+	{{#if currentUser}}
+	<table id = "compassTable">
+		
 		<tr>
 			<td></td>
-			<td class="north">North</td>
+			<td class="north"><center>N</center></td>
 			<td></td>
-			<td class="up">Up</td>
+			<td class="up"><center>U</center></td>
 		</tr>
 		<tr>
-			<td class ="west">West</td>
-			<td class ="origin"><center>--O--</center></td>
-			<td class="east">East</td>
+			<td class ="west"><center>W</center></td>
+			<td class ="origin"><center>&#9737;</center></td>
+			<td class="east"><center>E</center></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td></td>
-			<td class ="south">South</td>
+			<td class ="south"><center>S</center></td>
 			<td></td>
-			<td class ="down">Down</td>
+			<td class ="down"><center>D</center></td>
 		</tr>
 	</table>
+	{{/if}}
 </template>
 
 <template name = "chatBox">
+	{{#if currentUser}}
 	<form id = "chatForm">
 		<input class = "submitChat" type = "submit" value = "Say:">
 		<input type = "text" size = "" style = "width:90%"  id="chatTextInput">
 	</form>
+	{{/if}}
 </template>
 
 
