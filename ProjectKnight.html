@@ -1,8 +1,9 @@
 <head>
   <title>ProjectKnight</title>
+
+<link type="text/css" rel="stylesheet" href="dreamcodes/divider/css/tsc_divider.css" />
 </head>
 <body>
- {{>loginButtons}}
 
 
 {{#if currentUser}}
@@ -13,9 +14,9 @@
 	<br>
 	<br>
 		<div id="roomTitle"><center>{{> roomTitle}}</center></div>
-	
+	    	
 		<div id="roomDesc">{{> roomDesc}}</div>
-	
+				
 		<div id="roomContents">{{> roomContents}}</div>
 	
 		<div id="compass"><center>{{> compass}}</center></div>
@@ -35,7 +36,7 @@
 <div id = "loginTitle">{{> loginTitle}}</div>
 {{/if}}	
  
-
+{{> microphone_example}}
 </body>
 
 

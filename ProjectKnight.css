@@ -34,6 +34,7 @@ input#userPassword {
     padding:5px; 
     background-image: url(images/blankbookpageright.jpg);
 }
+
 #loginTitle {
     padding-left: 50px;
     font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
@@ -51,6 +52,16 @@ input#userPassword {
     top: 30%;
 }
 
+#playerPanel {
+    padding-left: 50px;
+    font-family: "Book Antiqua", Palatino, "Palatino Linotype", "Palatino LT STD", Georgia, serif;
+    line-height:20px;
+    background-color:#eeeeee;
+    height:700px;
+    width:40%;
+    float:left;
+    padding:5px; 
+    background-image: url(images/blankbookpageright.jpg);
 }
      #roomTitle {
         height:10%
@@ -129,3 +140,7 @@ td.origin {
 input.placeholder {
     text-align: center;
 }
+
+
+
+

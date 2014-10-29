@@ -95,8 +95,6 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
       return Rooms.findOne({_id: roomIn}, {roomDesc: 1}).roomDesc;
   };
 
-
-
 //helper function to generate list of rooms
   Template.roomList.listRooms = function(){
     return Rooms.find().fetch();
@@ -124,11 +122,137 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
         playerMap[Meteor.users.findOne({_id: playerList[i]},{'emails[0].address':1}).emails[0].address] = 
         Meteor.users.findOne({_id: playerList[i]},{'profile.sayMsg': 1}).profile.sayMsg
       };
-
-
-    return playerMap;
+      return playerMap;
     
   };
+
+//begin wit.AI
+  Template.microphone_example.rendered = function() {
+var mic = new Wit.Microphone(document.getElementById("microphone"));
+var info = function (msg) {
+  document.getElementById("info").innerHTML = msg;
+};
+var error = function (msg) {
+  document.getElementById("error").innerHTML = msg;
+};
+mic.onready = function () {
+  info("Microphone is ready to record");
+};
+mic.onaudiostart = function () {
+  info("Recording started");
+  error("");
+};
+mic.onaudioend = function () {
+  info("Recording stopped, processing started");
+};
+mic.onresult = function (intent, entities) {
+  var r = kv("intent", intent);
+
+  for (var k in entities) {
+    var e = entities[k];
+    console.log(intent);
+    console.log(entities);
+
+    if (!(e instanceof Array)) {
+      r += kv(k, e.value);
+    } else {
+      for (var i = 0; i < e.length; i++) {
+        r += kv(k, e[i].value);
+      }
+    }
+  }
+
+  document.getElementById("result").innerHTML = r;
+};
+mic.onerror = function (err) {
+  error("Error: " + err);
+};
+mic.onconnecting = function () {
+  info("Microphone is connecting");
+};
+mic.ondisconnected = function () {
+  info("Microphone is not connected");
+};
+
+mic.connect("4O4KJDOPHBPJ2GAUNPHDLXAHJXOKVQLU");
+      // mic.start();
+      // mic.stop();
+
+      function kv (k, v) {
+        if (toString.call(v) !== "[object String]") {
+          v = JSON.stringify(v);
+        }
+        if (v ==="move_north"){
+             console.log('intent was logged as move_north');
+             var currentUser = Meteor.userId();
+             var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+             if (!roomIn){return console.log('Alas, you cannot go that way.');};
+             var roomNorth = Rooms.findOne({_id: roomIn},{connectedNorth: 1}).connectedNorth;
+             if (!roomNorth){return console.log('Alas, you cannot go that way.');};
+             new Audio('/audio/forest_footsteps.mp3').play();
+             Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomNorth}});
+             moveTo(currentUser,roomIn,roomNorth);
+        } else if (v === "move_west"){
+             var currentUser = Meteor.userId();
+             var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+             if (!roomIn){return console.log('Alas, you cannot go that way.');};
+             var roomWest = Rooms.findOne({_id: roomIn},{connectedWest: 1}).connectedWest;
+             if (!roomWest){return console.log('Alas, you cannot go that way.');};
+             new Audio('/audio/forest_footsteps.mp3').play();
+             Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomWest}});
+             moveTo(currentUser,roomIn,roomWest);
+
+        } else if (v === "move_south"){
+             var currentUser = Meteor.userId();
+             var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+             if (!roomIn){return console.log('Alas, you cannot go that way.');};
+             var roomSouth = Rooms.findOne({_id: roomIn},{connectedSouth: 1}).connectedSouth;
+             if (!roomSouth){return console.log('Alas, you cannot go that way.');};
+             new Audio('/audio/forest_footsteps.mp3').play();
+             Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomSouth}});
+             moveTo(currentUser,roomIn,roomSouth);
+
+        } else if (v === "move_east"){
+             var currentUser = Meteor.userId();
+             var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+             if (!roomIn){return console.log('Alas, you cannot go that way.');};
+             var roomEast = Rooms.findOne({_id: roomIn},{connectedEast: 1}).connectedEast;
+             if (!roomEast){return console.log('Alas, you cannot go that way.');};
+             new Audio('/audio/forest_footsteps.mp3').play();
+             Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomEast}});
+             moveTo(currentUser,roomIn,roomEast);
+
+        } else if (v === "move_up"){
+             var currentUser = Meteor.userId();
+             var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+             if (!roomIn){return console.log('Alas, you cannot go that way.');};
+             var roomUp = Rooms.findOne({_id: roomIn},{connectedUp: 1}).connectedUp;
+             if (!roomUp){return console.log('Alas, you cannot go that way.');};
+             new Audio('/audio/forest_footsteps.mp3').play();
+             Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomUp}});
+     moveTo(currentUser,roomIn,roomUp);
+
+        } else if (v === "move_down"){
+           var currentUser = Meteor.userId();
+           var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+           if (!roomIn){return console.log('Alas, you cannot go that way.');};
+           var roomDown = Rooms.findOne({_id: roomIn},{connectedDown: 1}).connectedDown;
+           if (!roomDown){return console.log('Alas, you cannot go that way.');};
+           new Audio('/audio/forest_footsteps.mp3').play();
+           Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomDown}});
+           moveTo(currentUser,roomIn,roomDown);
+
+        }
+
+
+        return k + "=" + v + "\n";
+      }
+  };
+//End wit.ai helper
+
+
+
+
 
   //Title Login form and new user event handler
   Template.loginTitle.events({
@@ -136,6 +260,7 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
         theEvent.preventDefault();
         var email = theTemplate.find('#userEmail').value;
         var password = theTemplate.find('#userPassword').value;
+        new Audio('/audio/recall_origin.mp3').play();
 
         Meteor.loginWithPassword(email,password,function(err){
           if (err){
@@ -194,6 +319,8 @@ Template.roomList.isBuilder = function(){//helper function to validate if user h
     Rooms.update({_id: roomIn},{$pull:{'roomContents.players':currentUser}});
     //clears the players say message upon entering a new room
     Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': undefined}});
+    //sets emote to default standing position
+    Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
   };
 
   //event that clicks compass to changes roomIn of player
@@ -340,8 +467,9 @@ Template.chatBox.events({
     var emote = Session.get('emote');
     var setStand = Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
     Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': emote}});
+    new Audio('/audio/chat_blip.mp3').play();
     Meteor.setTimeout(function(){
-      Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}})
+      Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
     },10000);
   }
 });
