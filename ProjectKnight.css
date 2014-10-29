@@ -92,7 +92,6 @@ input#chatTextInput {
 
 
 
-
 #builderPanel {
 	display:inline-block;
     background-color:#eeeeee;
@@ -131,7 +130,7 @@ table#compassTable {
 
 td.origin {
     font-weight: 500;
-    font-size:100%;
+    font-size:0%;
     font-style: normal;
 }
 
