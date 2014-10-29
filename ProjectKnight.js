@@ -148,10 +148,24 @@ mic.onaudioend = function () {
 mic.onresult = function (intent, entities) {
   var r = kv("intent", intent);
 
+  if (intent === 'say') {
+    var currentUser = Meteor.userId();
+    var chatMsg = entities.message_body.value;
+    Session.set('emote','says, '+ '\"'+chatMsg+'.\"');
+    var emote = Session.get('emote');
+    var setStand = Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
+    Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': emote}});
+    new Audio('/audio/chat_blip.mp3').play();
+    Meteor.setTimeout(function(){
+      Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
+    },10000);
+
+  }
+
   for (var k in entities) {
     var e = entities[k];
     console.log(intent);
-    console.log(entities);
+    console.log(entities.message_body.value);
 
     if (!(e instanceof Array)) {
       r += kv(k, e.value);
@@ -161,6 +175,7 @@ mic.onresult = function (intent, entities) {
       }
     }
   }
+  console.log(r)
 
   document.getElementById("result").innerHTML = r;
 };
