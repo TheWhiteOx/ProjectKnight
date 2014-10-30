@@ -8,103 +8,7 @@ Rooms = new Meteor.Collection('rooms');
 
 if (Meteor.isClient) {
 
- //playing around with grid mapper
- //var mapRooms = function(){
-  //  var roomArray = Rooms.find().fetch();
-  //  console.log(roomArray[0]._id);
-  /*
-  1.  Mapper function takes in an array of room objects
-  2.  It sets the first element of the array to x y coordinates to 0,0
-  3.  Does that by pushing the first room to gridMap array with an object
-     with room ID as its name, and x y properties with values of 0 and 0
-    gridMap = {
-      "roomId1": {x: 0, y: 0};
-    }
-  4.  After setting the first room ID on the grid map, it pushes its current RoomID
-     to an array alreadyMapped.  = [room1,]
 
-     Also store CurrentRoom value to 0,0
-
-    Then the function goes thru the connected E W S E properties of room1 to check if its empty
-    if it has a room_id in it then it sets "newRoomId": {x: offset, y: offset} of each connected room.
-
-    THen marks current room as "spidered" by pushing it onto a spidered array.
-
-    then loops thru to see if connected rooms have bene spidered, if not
-
-     then run the function again, this time set the _id of the room to the X Y coords
-   
-// store all room objects into an roomArray
-   var roomArray = Rooms.find().fetch();
-//initialize a gridMap that stores roomID with key value pairs for x y coords
-   gridMap = {}
-//set the first item on the roomArray to 0,0 and put it in the gridMap obj
-   gridMap[roomArray[0]._id] = {
-                              roomTitle: roomArray[0].roomTitle,
-                              X: 0
-                              Y: 0
-                              Z: 0
-                            }
-//function to set coords of connected rooms below
-  roomToSpider(roomId)  //takes in array object such as roomArray[0]
-  var currentRoom = room
-  var currentRoomId = room._id;
-  var currentCoord = {
-                      x: gridMap[currentRoom].x,
-                      y: gridMap[currentRoom].y
-                     }
-  //maps all connected rooms to the gridMap with x y coordinates using currentCoord +- xy offset
-    for (var i = 0;i < roomArray;i++){
-      if (roomArray[i]._id === currentRoom){
-        if (roomArray[i].connectedWest !== ""){
-          gridMap.[roomArray[i].connectedWest].x = currentCoord.x -1;
-          gridMap.[roomArray[i].connectedWest].y = currentCord.y;  
-        }
-      }
-      if (roomArray[i]._id === currentRoom){
-        if (roomArray[i].connectedEast !== ""){
-          gridMap.[roomArray[i].connectedEast].x = currentCoord.x +1;
-          gridMap.[roomArray[i].connectedEast].y = currentCord.y;  
-        }
-      }
-      if (roomArray[i]._id === currentRoom){
-        if (roomArray[i].connectedNorth !== ""){
-          gridMap.[roomArray[i].connectedNorth].x = currentCoord.x;
-          gridMap.[roomArray[i].connectedNorth].y = currentCord.y +1;  
-        }
-      }
-      if (roomArray[i]._id === currentRoom){
-        if (roomArray[i].connectedSouth !== ""){
-          gridMap.[roomArray[i].connectedSouth].x = currentCoord.x ;
-          gridMap.[roomArray[i].connectedSouth].y = currentCord.y - 1;  
-        }
-      }
-    // after done mapping the connected rooms, set current room to Spidered.
-    var spidered = [currentRoom];
-
-
-    }
- 
-
-
-
-
-
-  */
-
-
- //};
-
- Template.roomGrid.grid = function(){
-  
-  
-
-
-
-
-
- return roomsArray;
- }
  
  Template.roomGrid.events({
 
@@ -126,10 +30,11 @@ if (Meteor.isClient) {
       x: 0,
       y: 0,
     };
-    console.log(gridMap);
+    console.log("gridMap with intial obj: " + _.keys(gridMap));
 
     //function to scan attached rooms and push them onto the gridMap obj.
     var spiderThisRoom = function(roomId){
+         console.log("-------------Spidering: " + roomId + " ---------------------");
           
           var currentRoomId = roomId;
           var currentRoomObj = (function(){
@@ -148,30 +53,34 @@ if (Meteor.isClient) {
           console.log("W: " + currentRoomObj.connectedWest);
           console.log("E:" + currentRoomObj.connectedEast);
           console.log("S: " + currentRoomObj.connectedSouth);
-          console.log("Length of N: " +currentRoomObj.connectedNorth.length)
+          console.log("Length of N: " +currentRoomObj.connectedNorth.length);
 
           if (currentRoomObj.connectedSouth.length === 17){
               gridMap[currentRoomObj.connectedSouth] = {x: currentCoords.x, y: currentCoords.y - 1};
               connectedRooms.push(currentRoomObj.connectedSouth);
               console.log("Pushing currentRoomObj.connectedSouth: " + currentRoomObj.connectedSouth);
+              console.log("Checking if Gridmaps obj update: x:" + gridMap[currentRoomObj.connectedSouth].x + " y:" + gridMap[currentRoomObj.connectedSouth].y )
           };
 
           if (currentRoomObj.connectedNorth.length === 17){//***not detecting this variable
               gridMap[currentRoomObj.connectedNorth] = {x: currentCoords.x, y: currentCoords.y + 1};
               connectedRooms.push(currentRoomObj.connectedNorth); 
-              console.log("Pushing currentRoomObj.connectedNorth: " + currentRoomObj.connectedSouth);
+              console.log("Pushing currentRoomObj.connectedNorth: " + currentRoomObj.connectedNorth);
+              console.log("Checking if Gridmaps obj update: x:" + gridMap[currentRoomObj.connectedNorth].x + " y:" + gridMap[currentRoomObj.connectedNorth].y )
           };
 
           if (currentRoomObj.connectedWest.length === 17){
               gridMap[currentRoomObj.connectedWest] = {x: currentCoords.x - 1, y: currentCoords.y};
               connectedRooms.push(currentRoomObj.connectedWest); 
-              console.log("Pushing currentRoomObj.connectedWest: " + currentRoomObj.connectedSouth);
+              console.log("Pushing currentRoomObj.connectedWest: " + currentRoomObj.connectedWest);
+              console.log("Checking if Gridmaps obj update: x:" + gridMap[currentRoomObj.connectedWest].x + " y:" + gridMap[currentRoomObj.connectedWest].y )
           };
 
           if (currentRoomObj.connectedEast.length === 17){
-              gridMap[currentRoomObj.connectedEast] = {x: currentCoords.x + 2, y: currentCoords.y};
+              gridMap[currentRoomObj.connectedEast] = {x: currentCoords.x + 1, y: currentCoords.y};
               connectedRooms.push(currentRoomObj.connectedEast); 
-              console.log("Pushing currentRoomObj.connectedEast: " + currentRoomObj.connectedSouth);
+              console.log("Pushing currentRoomObj.connectedEast: " + currentRoomObj.connectedEast);
+              console.log("Checking if Gridmaps obj update: x:" + gridMap[currentRoomObj.connectedEast].x + " y:" + gridMap[currentRoomObj.connectedEast].y )
           };
           console.log("These rooms are connected to current room: " + connectedRooms);
 
@@ -180,53 +89,37 @@ if (Meteor.isClient) {
           spideredRooms.push(currentRoomId);
           console.log(spideredRooms + " have been spidered.");
           console.log('Rooms connected to this room: ' + connectedRooms);
-          console.log("roomObjs that are gridded: " + gridMap);
+          console.log("roomObjs that are gridded: " + _.keys(gridMap));
           
-          var roomsToBeSpidered = [];
-          var connectedRoomsLength = connectedRooms.length;
-          var spideredRoomsLength = spideredRooms.length;
-
-          console.log("spideredRoomsLength: " +   spideredRoomsLength);
-          console.log("connectedRoomsLength: " + connectedRoomsLength);
-         
-
-          //Find the rooms that havent been spidered by comparing
-          //spideredRooms array with connectedRooms array.
-          //go thru each item on the connectedRooms list
-          //if they dont appear on the spideredRooms list
-          //push the item onto the roomsToBeSpidered array
-          for (var i = 0;i<connectedRoomsLength;i++){
-            for (var j = 0;j<spideredRoomsLength;j++){
-              if (connectedRooms[i] !== spideredRooms[j]){
-                for (var l = 0;l<roomsToBeSpidered.length;l++){
-                  if (connectedRooms[i] !== roomsToBeSpidered[l]){
-                    roomsToBeSpidered.push(connectedRooms[i]);
-                    }
-                  }
-                }
-              }
-            }
+      
+         roomsToBeSpidered = _.difference(connectedRooms,spideredRooms);
           
           //log out remaining rooms that have not been spidered that is connected
           //to current room to an array
-          var roomsToBeSpideredLength = roomsToBeSpidered.length;
-          console.log("These rooms still need to be spidered: " + roomsToBeSpidered + " Total: " + roomsToBeSpideredLength);
+          console.log("These rooms still need to be spidered: " + roomsToBeSpidered + " Total: " + roomsToBeSpidered.length);
 
-          //loop through the roomsToBeSpidered array and pass each array element
-          //to the spiderThisRoom function
-         // for (var k = 0;k<roomsToBeSpideredLength;k++){
-           // spiderThisRoom(roomsToBeSpidered[k]);
-         // }
+          console.log("----------------End Spidering of: " + roomId + " --------------------------------------");
+          //pass through each element in the roomsToBeSpidered in the spideredThisRoom func
+          _.each(roomsToBeSpidered, spiderThisRoom);
+
+        
 
     } //end of spider function
 
 
-     //spiderThisRoom("mfFLnAARmf3H7d79H");
-     spiderThisRoom("3fHgRHFe9NhCQGXdc");//trying under fig tree room, should have 4 connected rooms
+     spiderThisRoom("mfFLnAARmf3H7d79H");
+     //spiderThisRoom("3fHgRHFe9NhCQGXdc");//trying under fig tree room, should have 4 connected rooms
 
- 
-  }
+     //log out final result of gridMaps:
+     console.log("Final Gridmap Keys: " + _.keys(gridMap));
 
+     for (key in gridMap) {
+      console.log(key + ":   x: " + key.x + " y: " + key.y);
+     };
+
+
+    
+  }//end of click render grid event for Template.roomGrid.events
 
  });
 
@@ -392,6 +285,8 @@ mic.onresult = function (intent, entities) {
       Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
     },10000);
 
+        //*** the var declarations can be declared once in this funciton scope and
+        //used by all the if else statements
         } else if (intent ==="move_north"){
              console.log('intent was logged as move_north');
              var currentUser = Meteor.userId();
