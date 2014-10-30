@@ -113,8 +113,12 @@ if (Meteor.isClient) {
     //construct an array of objects from the Rooms collection
     var roomsArray = Rooms.find().fetch();
     console.log(roomsArray);
+
     //initialize a gridmap object that contains each roomID as a key and their x y coords as values
     gridMap = {};
+
+    //A spidered room means the connected rooms have been scanned and connected rooms loaded to the gridMap
+    var spideredRooms = [];
 
     //insert the initial room into the gridMap
     gridMap[roomsArray[0]._id] = {
@@ -126,6 +130,7 @@ if (Meteor.isClient) {
 
     //function to scan attached rooms and push them onto the gridMap obj.
     var spiderThisRoom = function(roomId){
+          
           var currentRoomId = roomId;
           var currentRoomObj = (function(){
                                 for (var i = 0;i<roomsArray.length;i++){
@@ -135,30 +140,89 @@ if (Meteor.isClient) {
                                 };
                                })();
 
-          var currentCoords = {x: gridMap[currentRoomId].x, y: gridMap[currentRoomId].y};
-        
-          if (currentRoomObj.connectedSouth !== ""){
+          var currentCoords = {x: 0/*temp gridMap[currentRoomId].x*/, y: 0/*temp gridMap[currentRoomId].y*/};
+          var connectedRooms = [];
+
+          //log all rooms connected to currentRoomObj
+          console.log("N: " + currentRoomObj.connectedNorth);
+          console.log("W: " + currentRoomObj.connectedWest);
+          console.log("E:" + currentRoomObj.connectedEast);
+          console.log("S: " + currentRoomObj.connectedSouth);
+          console.log("Length of N: " +currentRoomObj.connectedNorth.length)
+
+          if (currentRoomObj.connectedSouth.length === 17){
               gridMap[currentRoomObj.connectedSouth] = {x: currentCoords.x, y: currentCoords.y - 1};
-             
-
-          } else if (currentRoomObj.connectedNorth !== ""){
-              gridMap[currentRoomObj.connectedNorth] = {x: currentCoords.x, y: currentCoords.y + 1};
-              
-
-          } else if (currentRoomObj.connectedWest !== ""){
-              gridMap[currentRoomObj.connectedWest] = {x: currentCoords.x - 1, y: currentCoords.y};
-             
-
-          } else if (currentRoomObj.connectedEast !== ""){
-              gridMap[currentRoomObj.connectedEast] = {x: currentCoords.x + 2, y: currentCoords.y};
-              
-
+              connectedRooms.push(currentRoomObj.connectedSouth);
+              console.log("Pushing currentRoomObj.connectedSouth: " + currentRoomObj.connectedSouth);
           };
 
-             console.log(gridMap);
-    }
+          if (currentRoomObj.connectedNorth.length === 17){//***not detecting this variable
+              gridMap[currentRoomObj.connectedNorth] = {x: currentCoords.x, y: currentCoords.y + 1};
+              connectedRooms.push(currentRoomObj.connectedNorth); 
+              console.log("Pushing currentRoomObj.connectedNorth: " + currentRoomObj.connectedSouth);
+          };
 
-     spiderThisRoom("mfFLnAARmf3H7d79H");
+          if (currentRoomObj.connectedWest.length === 17){
+              gridMap[currentRoomObj.connectedWest] = {x: currentCoords.x - 1, y: currentCoords.y};
+              connectedRooms.push(currentRoomObj.connectedWest); 
+              console.log("Pushing currentRoomObj.connectedWest: " + currentRoomObj.connectedSouth);
+          };
+
+          if (currentRoomObj.connectedEast.length === 17){
+              gridMap[currentRoomObj.connectedEast] = {x: currentCoords.x + 2, y: currentCoords.y};
+              connectedRooms.push(currentRoomObj.connectedEast); 
+              console.log("Pushing currentRoomObj.connectedEast: " + currentRoomObj.connectedSouth);
+          };
+          console.log("These rooms are connected to current room: " + connectedRooms);
+
+          //After checking all the room exits and logging connected rooms, 
+          //the current roomId is pushed onto spideredRooms array
+          spideredRooms.push(currentRoomId);
+          console.log(spideredRooms + " have been spidered.");
+          console.log('Rooms connected to this room: ' + connectedRooms);
+          console.log("roomObjs that are gridded: " + gridMap);
+          
+          var roomsToBeSpidered = [];
+          var connectedRoomsLength = connectedRooms.length;
+          var spideredRoomsLength = spideredRooms.length;
+
+          console.log("spideredRoomsLength: " +   spideredRoomsLength);
+          console.log("connectedRoomsLength: " + connectedRoomsLength);
+         
+
+          //Find the rooms that havent been spidered by comparing
+          //spideredRooms array with connectedRooms array.
+          //go thru each item on the connectedRooms list
+          //if they dont appear on the spideredRooms list
+          //push the item onto the roomsToBeSpidered array
+          for (var i = 0;i<connectedRoomsLength;i++){
+            for (var j = 0;j<spideredRoomsLength;j++){
+              if (connectedRooms[i] !== spideredRooms[j]){
+                for (var l = 0;l<roomsToBeSpidered.length;l++){
+                  if (connectedRooms[i] !== roomsToBeSpidered[l]){
+                    roomsToBeSpidered.push(connectedRooms[i]);
+                    }
+                  }
+                }
+              }
+            }
+          
+          //log out remaining rooms that have not been spidered that is connected
+          //to current room to an array
+          var roomsToBeSpideredLength = roomsToBeSpidered.length;
+          console.log("These rooms still need to be spidered: " + roomsToBeSpidered + " Total: " + roomsToBeSpideredLength);
+
+          //loop through the roomsToBeSpidered array and pass each array element
+          //to the spiderThisRoom function
+         // for (var k = 0;k<roomsToBeSpideredLength;k++){
+           // spiderThisRoom(roomsToBeSpidered[k]);
+         // }
+
+    } //end of spider function
+
+
+     //spiderThisRoom("mfFLnAARmf3H7d79H");
+     spiderThisRoom("3fHgRHFe9NhCQGXdc");//trying under fig tree room, should have 4 connected rooms
 
  
   }
