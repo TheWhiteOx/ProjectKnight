@@ -1,7 +1,7 @@
 <head>
   <title>ProjectKnight</title>
 
-<link type="text/css" rel="stylesheet" href="dreamcodes/divider/css/tsc_divider.css" />
+
 </head>
 <body>
 
@@ -182,6 +182,7 @@ Close Book
       <input type='button' id ='deleteRoom' value = 'Delete Room'/>
     </div>
    </form>
+   {{> roomGrid}}
   {{/if}}
 </template>
 
@@ -203,5 +204,12 @@ Close Book
   	<ul>
   		<li class = 'teleportTo'><input type = 'button' id ='teleportTo' value = 'Teleport To Selected Room'/></li>
   	</ul>
+  	
   	{{/if}}
+
+</template>
+
+<template name = "roomGrid">
+<input type = "button" id = "renderGrid" value = "Render Grid">
+RoomGrid: {{grid}}
 </template>
