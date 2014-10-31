@@ -128,7 +128,7 @@
       //given columsn X would be 9 and rows Y would be 15
       //push data into two dimensional array
 
-    var girdArray =  [];   
+    var gridArray =  [];   
 
 
     
@@ -406,7 +406,7 @@ mic.connect("4O4KJDOPHBPJ2GAUNPHDLXAHJXOKVQLU");
   //event that detects clicking of logout button and removes logged out playerId from current room
   Template.loginButtons.events({
     'click #login-buttons-logout': function() {
-      console.log('testlogout');
+      console.log('Logging out! Have a nice day!');
      var currentUser = Meteor.userId();
      console.log(currentUser);
      var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
@@ -441,6 +441,8 @@ mic.connect("4O4KJDOPHBPJ2GAUNPHDLXAHJXOKVQLU");
     //sets emote to default standing position
     Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
   };
+
+  //testing changes for refactor_compass_events branch Merge
 
   //event that clicks compass to changes roomIn of player
   Template.compass.events({
