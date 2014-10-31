@@ -1,41 +1,26 @@
 <head>
   <title>ProjectKnight</title>
-
-
 </head>
+
 <body>
-
-
 {{#if currentUser}}
 <div id = "playerPanel">
-	
 	{{> loginButtons}}
 	<br>
 	<br>
 	<br>
-		<div id="roomTitle"><center>{{> roomTitle}}</center></div>
-	    	
-		<div id="roomDesc">{{> roomDesc}}</div>
-				
-		<div id="roomContents">{{> roomContents}}</div>
-	
-		<div id="compass"><center>{{> compass}}</center></div>
-
-		<div id="chatBox">{{> chatBox}}</div>
+	<div id="roomTitle"><center> {{> roomTitle}} </center></div>
+	<div id="roomDesc"> {{> roomDesc}} </div>	
+	<div id="roomContents"> {{> roomContents}} </div>
+	<div id="compass"><center> {{> compass}} </center></div>
+	<div id="chatBox"> {{> chatBox}} </div>
 </div>
-
-
-<div id = "builderPanel">
-	{{> addRoom}}
-	</div>
-
-	<div id = "roomListPanel">
-	{{> roomList}}
-</div>
+<div id = "builderPanel"> {{> addRoom}} </div>
+<div id = "roomListPanel"> {{> roomList}} </div>
 {{else}}
 <div id = "loginTitle">{{> loginTitle}}</div>
 {{/if}}	
- 
+
 </body>
 
 
@@ -49,11 +34,9 @@
 
 
 <!--****TEMPLATES FROM HERE ON DOWN****TO BE MIGRATED TO SEPERATE FILES LATER-->
-<template name = "logout">
-Close Book
-</template>
 
 
+<!--Main Player Panel-->
 <template name = "loginTitle">
 	<div id = "loginTitleDiv">
 	<center><h1 style ="font-size: 350%"><br><br><br>Origins</h1></center><br><br><br>
@@ -85,10 +68,6 @@ Close Book
 
 
 
-
-<template name = "roomEvents">
-	These are events that happen in the room.  Like players leaving, or objects getting picked up. Or even room events.
-</template>
 
 <template name = "compass">
 	{{#if currentUser}}
@@ -155,7 +134,7 @@ Close Book
 
     <div>
 
-	 <h3>Rooms to Connect To (enter roomId):</h3>
+	<h3>Rooms to Connect To (enter roomId):</h3>
 
 	<table id = "connectedTo" style = "width:95%">
 	<tr>
@@ -210,6 +189,6 @@ Close Book
 </template>
 
 <template name = "roomGrid">
-<input type = "button" id = "renderGrid" value = "Render Grid">
+<input type = "button" id = "renderGrid" value = "Render Grid to Console">
 RoomGrid: {{grid}}
 </template>
