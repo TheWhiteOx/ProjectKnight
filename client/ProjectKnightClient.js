@@ -444,6 +444,8 @@ mic.connect("4O4KJDOPHBPJ2GAUNPHDLXAHJXOKVQLU");
 
   //testing changes for refactor_compass_events branch Merge
 
+    };
+
   //event that clicks compass to changes roomIn of player
   Template.compass.events({
     'click td.north': function(){
