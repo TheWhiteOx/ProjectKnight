@@ -429,6 +429,9 @@ mic.connect("4O4KJDOPHBPJ2GAUNPHDLXAHJXOKVQLU");
     }
 
   });
+
+
+  
   //function that pushes userId into Room.roomContents.player array and
   //deletes userId from the current Room.roomContents.player array.
   var moveTo = function(currentUser,roomIn,roomTo){
@@ -442,9 +445,76 @@ mic.connect("4O4KJDOPHBPJ2GAUNPHDLXAHJXOKVQLU");
     Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
   };
 
-  //testing changes for refactor_compass_events branch Merge
-
+  //helpers that grey out compass direction keys if room doesn't exist
+  Template.compass.exitNorth = function(){
+    var currentUser = Meteor.userId();
+    var roomIn = Meteor.users.findOne({_id: currentUser}, {'profile.roomIn': 1}).profile.roomIn;
+    var roomNorth = Rooms.findOne({_id: roomIn},{connectedNorth: 1}).connectedNorth;
+    var roomNorthCheck = Rooms.findOne({_id: roomNorth},{connectedSouth: 1}).connectedSouth;
+    if (roomIn === roomNorthCheck){
+      return "N";
+    } else {
+      return " ";
     };
+  };
+  Template.compass.exitSouth = function(){
+    var currentUser = Meteor.userId();
+    var roomIn = Meteor.users.findOne({_id: currentUser}, {'profile.roomIn': 1}).profile.roomIn;
+    var roomSouth = Rooms.findOne({_id: roomIn},{connectedSouth: 1}).connectedSouth;
+    var roomSouthCheck = Rooms.findOne({_id: roomSouth},{connectedNorth: 1}).connectedNorth;
+    if (roomIn === roomSouthCheck){
+      return "S";
+    } else {
+      return " ";
+    };
+  };
+  Template.compass.exitEast = function(){
+    console.log('exitEast function');
+    var currentUser = Meteor.userId();
+    var roomIn = Meteor.users.findOne({_id: currentUser}, {'profile.roomIn': 1}).profile.roomIn;
+    var roomEast = Rooms.findOne({_id: roomIn},{connectedEast: 1}).connectedEast;
+    var roomEastCheck = Rooms.findOne({_id: roomEast},{connectedWest: 1}).connectedWest;
+    console.log("roomIn: "+roomIn + " roomEastCheck: " + roomEastCheck);
+    if (roomIn === roomEastCheck){
+      return "E";
+    } else {
+      return "x";
+    };
+  };
+  Template.compass.exitWest = function(){
+    var currentUser = Meteor.userId();
+    var roomIn = Meteor.users.findOne({_id: currentUser}, {'profile.roomIn': 1}).profile.roomIn;
+    var roomWest = Rooms.findOne({_id: roomIn},{connectedWest: 1}).connectedWest;
+    var roomWestCheck = Rooms.findOne({_id: roomWest},{connectedEast: 1}).connectedEast;
+    if (roomIn === roomWestCheck){
+      return "W";
+    } else {
+      return " ";
+    };
+  };
+
+  /*Template.compass.exitNorth = function(){
+    var currentUser = Meteor.userId();
+    var roomIn = Meteor.users.findOne({_id: currentUser}, {'profile.roomIn': 1}).profile.roomIn;
+    var roomNorth = Rooms.findOne({_id: roomIn},{connectedNorth: 1}).connectedNorth;
+    var roomNorthCheck = Rooms.findOne({_id: roomNorth},{connectedSouth: 1}).connectedSouth;
+    if (roomIn === roomNorthCheck){
+      return "N";
+    } else {
+      return " ";
+    };
+  };
+  Template.compass.exitNorth = function(){
+    var currentUser = Meteor.userId();
+    var roomIn = Meteor.users.findOne({_id: currentUser}, {'profile.roomIn': 1}).profile.roomIn;
+    var roomNorth = Rooms.findOne({_id: roomIn},{connectedNorth: 1}).connectedNorth;
+    var roomNorthCheck = Rooms.findOne({_id: roomNorth},{connectedSouth: 1}).connectedSouth;
+    if (roomIn === roomNorthCheck){
+      return "N";
+    } else {
+      return " ";
+    };
+  };*/
 
   //event that clicks compass to changes roomIn of player
   Template.compass.events({

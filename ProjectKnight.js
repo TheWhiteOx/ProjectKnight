@@ -1,5 +1,6 @@
 //new MongoDB collection that stores all the games rooms.
 Rooms = new Meteor.Collection('rooms');
+Mobs = new Meteor.Collection('mobs');
 
 
 

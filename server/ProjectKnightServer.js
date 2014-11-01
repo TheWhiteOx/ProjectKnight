@@ -9,10 +9,10 @@ Meteor.startup(function () {
    if (!hasOrigin){
      Rooms.insert({
               roomTitle: 'Origin of Light',
-              roomDesc: 'You stand at the edge of all creation.  ' + '
-                        Light in a multitude of directions stream through, '+'
-                        solidifying into proto shapes that keep shifting, '+'
-                        waiting for you to direct it.',
+              roomDesc: 'You stand at the edge of all creation.  '+
+                        'Light in a multitude of directions stream through, '+
+                        'solidifying into proto shapes that keep shifting, '+
+                        'waiting for you to direct it.',
               roomContents: {players: [Meteor.userId()]}
             });
     }
