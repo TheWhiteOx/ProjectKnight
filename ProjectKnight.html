@@ -38,6 +38,7 @@
 
 <!--Main Player Panel-->
 <template name = "loginTitle">
+{{welcomeAudio}}
 	<div id = "loginTitleDiv">
 	<center><h1 style ="font-size: 350%"><br><br><br>Origins</h1></center><br><br><br>
 	<form id = "loginTitlePage">
@@ -75,19 +76,19 @@
 		
 		<tr>
 			<td></td>
-			<td class="north"><center>{{exitNorth}}</center></td>
+			<td class="north"><center>N</center></td>
 			<td></td>
 			<td class="up"><center>U</center></td>
 		</tr>
 		<tr>
-			<td class ="west"><center>{{exitWest}}</center></td>
+			<td class ="west"><center>W</center></td>
 			<td class ="origin"><center>{{> microphone_example}}</center></td>
 			<td class="east"><center>E</center></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td></td>
-			<td class ="south"><center>{{exitSouth}}</center></td>
+			<td class ="south"><center>S</center></td>
 			<td></td>
 			<td class ="down"><center>D</center></td>
 		</tr>
