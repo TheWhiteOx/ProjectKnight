@@ -228,6 +228,7 @@ Template.roomList.isBuilder = isBuilder;
 
   //lists players in the room and their emote messages
   Template.roomContents.listPlayers = function(){
+
     var playerMap = {};
     var currentUser = Meteor.userId();
     var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
@@ -241,6 +242,11 @@ Template.roomList.isBuilder = isBuilder;
         Meteor.users.findOne({_id: playerList[i]},{'profile.sayMsg': 1}).profile.sayMsg
       };
       console.log(playerMap);
+
+      //play chatblip if Session.get('')
+      if (Session.get('sayAudio')){
+        new Audio('/audio/chat_blip.mp3').play();
+      };
       return playerMap;
     
   };
@@ -680,6 +686,7 @@ Template.chatBox.events({
     var chatMsg = theTemplate.find('#chatTextInput').value;
     var currentUser = Meteor.userId();
     $('#chatTextInput').val('');
+    Session.set('sayAudio',_.random(0,100))
     Session.set('emote','says, '+ '\"'+chatMsg+'.\"');
     var emote = Session.get('emote');
     var setStand = Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
