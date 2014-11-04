@@ -1,4 +1,4 @@
-globalCurrentUserId = Meteor.userId();
+
  
 
  //allows handlebars #each to take in objects and convert them into arrays
@@ -248,6 +248,7 @@ Template.roomList.isBuilder = isBuilder;
 //function that plays a random audio from a list
   var randAudio = function(list) {
     console.log(_.sample(list));
+    new Audio('/audio/forest_footsteps.mp3').play();
     new Audio(_.sample(list)).play();
   };
 
