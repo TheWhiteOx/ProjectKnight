@@ -44,10 +44,20 @@ Accounts.onLogin(function(result){
 
 
 
+Hooks.onCloseSession = function(userId){
+  console.log('CLient browser closed. ' + userId + " logged out.");
+  var currentUser = userId;
+  var roomIn = Meteor.users.findOne({_id: userId},{'profile.roomIn': 1}).profile.roomIn;
+  console.log('RoomIn when logged out: ' + roomIn);
+  Rooms.update({_id: roomIn},{$pull:{'roomContents.players':currentUser}});
+};
+
 
 
 /////////////////////////////////////////Execute's on server upon startup////////////////////////////////////////////////////////
 Meteor.startup(function () {
+
+    
 
     //Checks if Origin room has been created upon new database creation, if not, it creates one.
   var hasOrigin = Rooms.findOne({roomTitle: 'Origin of Light'});

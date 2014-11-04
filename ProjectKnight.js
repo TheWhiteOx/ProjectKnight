@@ -2,6 +2,27 @@
 Rooms = new Meteor.Collection('rooms');
 Mobs = new Meteor.Collection('mobs');
 
+//MOBS-------------
+/*
+id:
+shortDesc
+longDesc
+events
+inventory
+
+
+
+*/
+var forestBunny = {};
+var forestButterfly = {};
+var forestBird = {};
+
+
+//loading mobs function
+var loadMob = function(mobType,location){
+
+};
+
 
 
 

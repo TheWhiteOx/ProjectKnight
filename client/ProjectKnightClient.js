@@ -1,4 +1,8 @@
+Meteor.startup(function(){
+  
+  Hooks.init();
 
+});
  
 
  //allows handlebars #each to take in objects and convert them into arrays
@@ -407,11 +411,14 @@ Template.loginTitle.welcomeAudio = function(){
         theEvent.preventDefault();
         var email = theTemplate.find('#userEmail').value;
         var password = theTemplate.find('#userPassword').value;
-        new Audio('/audio/recall_origin.mp3').play();
-        new Audio('/audio/voice_feedback/compass_or_microphone.mp3').play();
+        
 
         Meteor.loginWithPassword(email,password,function(err){
-          if (err){
+          console.log('pairs: ' + _.pairs(err));
+          if (err.reason === 'Incorrect password'){
+            return console.log('Login Error: Incorrect Password');
+          } else if (err.reason === 'User not found'){
+            
             console.log('User doesn\'t exist.  Creating a new user.');
             
                           Accounts.createUser({email: email, password: password},
@@ -420,10 +427,14 @@ Template.loginTitle.welcomeAudio = function(){
                                 console.log("Error creating new user.");
                               } else {
                                 console.log("Success! New user created.");
+                                new Audio('/audio/recall_origin.mp3').play();
+                                new Audio('/audio/voice_feedback/compass_or_microphone.mp3').play();
                               }
                            });
           } else {
             console.log(email + " is logged in!");
+            new Audio('/audio/recall_origin.mp3').play();
+            new Audio('/audio/voice_feedback/compass_or_microphone.mp3').play();
           };      
 
         });
