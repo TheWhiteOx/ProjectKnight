@@ -414,7 +414,7 @@ Template.loginTitle.welcomeAudio = function(){
         
 
         Meteor.loginWithPassword(email,password,function(err){
-          console.log('pairs: ' + _.pairs(err));
+          console.log('err: ' + err);
           if (err.reason === 'Incorrect password'){
             return console.log('Login Error: Incorrect Password');
           } else if (err.reason === 'User not found'){
@@ -426,15 +426,18 @@ Template.loginTitle.welcomeAudio = function(){
                               if (err){
                                 console.log("Error creating new user.");
                               } else {
-                                console.log("Success! New user created.");
                                 new Audio('/audio/recall_origin.mp3').play();
                                 new Audio('/audio/voice_feedback/compass_or_microphone.mp3').play();
+                                console.log("Success! New user created.");
+                                
                               }
                            });
           } else {
-            console.log(email + " is logged in!");
+            console.log('Test loggin');
             new Audio('/audio/recall_origin.mp3').play();
             new Audio('/audio/voice_feedback/compass_or_microphone.mp3').play();
+            console.log(email + " is logged in!");
+            
           };      
 
         });
