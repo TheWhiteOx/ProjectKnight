@@ -1,3 +1,5 @@
+globalCurrentUserId = Meteor.userId();
+ 
 
  //allows handlebars #each to take in objects and convert them into arrays
   Handlebars.registerHelper('arrayify', function(obj){
@@ -230,6 +232,7 @@ Template.roomList.isBuilder = isBuilder;
     var currentUser = Meteor.userId();
     var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
     var playerList = Rooms.findOne({_id: roomIn},{'roomContents.players':1}).roomContents.players;
+    console.log(playerList);
     //create new key value map with email and say message
     //var email = Meteor.users.findOne({_id: currentUser},{'emails[0].address':1}).emails[0].address;
     //var sayMsg = Meteor.users.findOne({_id: currentUser},{'profile.sayMsg': 1}).profile.sayMsg;
@@ -237,6 +240,7 @@ Template.roomList.isBuilder = isBuilder;
         playerMap[Meteor.users.findOne({_id: playerList[i]},{'emails[0].address':1}).emails[0].address] = 
         Meteor.users.findOne({_id: playerList[i]},{'profile.sayMsg': 1}).profile.sayMsg
       };
+      console.log(playerMap);
       return playerMap;
     
   };
@@ -424,11 +428,10 @@ Template.loginTitle.welcomeAudio = function(){
   //event that detects clicking of logout button and removes logged out playerId from current room
   Template.loginButtons.events({
     'click #login-buttons-logout': function() {
-      console.log('Logging out! Have a nice day!');
      var currentUser = Meteor.userId();
-     console.log(currentUser);
+     console.log(currentUser + ' logging out!');
      var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
-     console.log(roomIn);
+     console.log('RoomIn when logged out: ' + roomIn);
      Rooms.update({_id: roomIn},{$pull:{'roomContents.players':currentUser}});
     }
   });
@@ -679,10 +682,13 @@ Template.chatBox.events({
     Session.set('emote','says, '+ '\"'+chatMsg+'.\"');
     var emote = Session.get('emote');
     var setStand = Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
+    Meteor.clearTimeout(Session.get('timeoutHandle'));
     Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': emote}});
     new Audio('/audio/chat_blip.mp3').play();
-    Meteor.setTimeout(function(){
+    var timeoutHandle = Meteor.setTimeout(function(){
       Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
-    },10000);
+    },20000);
+    Session.set('timeoutHandle',timeoutHandle);
+
   }
 });
