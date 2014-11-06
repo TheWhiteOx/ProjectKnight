@@ -313,7 +313,7 @@ Template.roomList.isBuilder = isBuilder;
 
   
     //establishes initial display of mobs upon rendering room
-    _.each(mobList,function(mobId){
+  _.each(mobList,function(mobId){
       var randomEmote = "";
       var mobLongDesc = Mobs.findOne({_id: mobId},{mobLongDesc: 1}).mobLongDesc
       emoteArray.push(Mobs.findOne({_id: mobId},{emoteOne: 1}).emoteOne);
@@ -323,28 +323,9 @@ Template.roomList.isBuilder = isBuilder;
       randomEmote = _.sample(emoteArray,1);
       console.log('randomEmote is: ' + randomEmote);
       mobMap[mobLongDesc] = randomEmote;
-
-      
     });
     return mobMap;
   };
-
-
-   //intermintenly changes mob long descriptions by randomly updating DB
-  var randomCurrentEmote = function(mobId){
-    var emoteArray = [];
-    emoteArray.push(Mobs.findOne({_id: mobId},{emoteOne: 1}).emoteOne);
-    emoteArray.push(Mobs.findOne({_id: mobId},{emoteTwo: 1}).emoteTwo);
-    emoteArray.push(Mobs.findOne({_id: mobId},{emoteThree: 1}).emoteThree);
-    var randomEmote = _.sample(emoteArray,1);
-    var randomDuration = _.random(1500,2500);
-    Meteor.setTimeout(function(){
-      Mob.update({_id: mobId},{$set: {currentEmote: randomEmote}});
-    },randomDuration)
-  };
-
-
-
 
 
 //function that plays a random audio from a list
@@ -725,6 +706,7 @@ Template.loginTitle.welcomeAudio = function(){
     var mobLongDescText = theTemplate.find('#mobLongDesc').value;
     var mobShortDescText = theTemplate.find('#mobShortDesc').value;
     var mobHealthText = theTemplate.find('#mobHealth').value;
+    var currentEmote = 'is here';
     var emoteOneText = theTemplate.find('#mobEmote1').value;
     var emoteTwoText = theTemplate.find('#mobEmote2').value;
     var emoteThreeText = theTemplate.find('#mobEmote3').value;
@@ -738,6 +720,7 @@ Template.loginTitle.welcomeAudio = function(){
               mobLongDesc: mobLongDescText,
               mobShortDesc: mobShortDescText,
               mobHealth: mobHealthText,
+              currentEmote: currentEmote,
               emoteOne: emoteOneText,
               emoteTwo: emoteTwoText,
               emoteThree: emoteThreeText,
@@ -750,6 +733,7 @@ Template.loginTitle.welcomeAudio = function(){
               mobLongDesc: mobLongDescText,
               mobShortDesc: mobShortDescText,
               mobHealth: mobHealthText,
+              currentEmote: currentEmote,
               emoteOne: emoteOneText,
               emoteTwo: emoteTwoText,
               emoteThree: emoteThreeText,
