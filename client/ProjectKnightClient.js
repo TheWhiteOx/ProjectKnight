@@ -1,4 +1,4 @@
-  Meteor.startup(function(){
+ Meteor.startup(function(){
   
   Hooks.init();
 
@@ -304,19 +304,48 @@ Template.roomList.isBuilder = isBuilder;
 
   Template.roomMobs.listMobs = function(){
     var mobMap = {};
+    var emoteArray = [];
+    var mobList = [];
     var currentUser = Meteor.userId();
     var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
-    var mobList = Rooms.findOne({_id: roomIn},{'roomContents.mobs':1}).roomContents.mobs;
+    mobList = Rooms.findOne({_id: roomIn},{'roomContents.mobs':1}).roomContents.mobs;
     console.log('mobList from Template.roomMobs: ' + mobList);
 
-    //get a list of mobs in the room through mobList
-    //get all their longDescs and emote1 and map it to mobMap
-    //with all the mobs in mobMap, randomly select an emote for each mob
-    //and update the emote in mobMap 
+  
+    //establishes initial display of mobs upon rendering room
+    _.each(mobList,function(mobId){
+      var randomEmote = "";
+      var mobLongDesc = Mobs.findOne({_id: mobId},{mobLongDesc: 1}).mobLongDesc
+      emoteArray.push(Mobs.findOne({_id: mobId},{emoteOne: 1}).emoteOne);
+      emoteArray.push(Mobs.findOne({_id: mobId},{emoteTwo: 1}).emoteTwo);
+      emoteArray.push(Mobs.findOne({_id: mobId},{emoteThree: 1}).emoteThree);
+      console.log("emoteArray: " + emoteArray);
+      randomEmote = _.sample(emoteArray,1);
+      console.log('randomEmote is: ' + randomEmote);
+      mobMap[mobLongDesc] = randomEmote;
 
-
-    return mobList;//mobMap;
+      
+    });
+    return mobMap;
   };
+
+
+   //intermintenly changes mob long descriptions by randomly updating DB
+  var randomCurrentEmote = function(mobId){
+    var emoteArray = [];
+    emoteArray.push(Mobs.findOne({_id: mobId},{emoteOne: 1}).emoteOne);
+    emoteArray.push(Mobs.findOne({_id: mobId},{emoteTwo: 1}).emoteTwo);
+    emoteArray.push(Mobs.findOne({_id: mobId},{emoteThree: 1}).emoteThree);
+    var randomEmote = _.sample(emoteArray,1);
+    var randomDuration = _.random(1500,2500);
+    Meteor.setTimeout(function(){
+      Mob.update({_id: mobId},{$set: {currentEmote: randomEmote}});
+    },randomDuration)
+  };
+
+
+
+
 
 //function that plays a random audio from a list
   var randAudio = function(list) {
@@ -619,7 +648,6 @@ Template.loginTitle.welcomeAudio = function(){
       return " ";
     };
   };
-
   /*Template.compass.exitNorth = function(){
     var currentUser = Meteor.userId();
     var roomIn = Meteor.users.findOne({_id: currentUser}, {'profile.roomIn': 1}).profile.roomIn;
