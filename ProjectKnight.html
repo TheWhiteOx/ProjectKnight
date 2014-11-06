@@ -13,7 +13,7 @@
 	<br>
 	<div id="roomTitle"><center> {{> roomTitle}} </center></div>
 	<div id="roomDesc"> {{> roomDesc}} </div>	
-	<div id="roomContents"> {{> roomContents}} </div>
+	<div id="roomContents"> {{> roomContents}}</div>
 	<div id="compass"><center> {{> compass}} </center></div>
 	<div id="chatBox"> {{> chatBox}} </div>
 </div>
@@ -55,9 +55,15 @@
 
 
 <template name = "roomContents">
+	{{> roomMobs}}
 	{{#each arrayify listPlayers}}
-	<div>{{name}} {{value}}
-	</div>
+	<div>{{name}} {{value}}</div>
+	{{/each}}
+</template>
+
+<template name = "roomMobs">
+	{{#each arrayify listMobs}}
+	<div>{{name}} {{value}}</div>
 	{{/each}}
 </template>
 

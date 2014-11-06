@@ -250,11 +250,11 @@ Template.roomList.isBuilder = isBuilder;
  
   Template.addMobs.mobEmoteTwoPrefill = function(){
     var selectedMob = Session.get('selectedMob');
-    return Mobs.findOne({_id: selectedMob}, {emoteTwo: 1}).mobEmoteTwo
+    return Mobs.findOne({_id: selectedMob}, {emoteTwo: 1}).emoteTwo
   };
   Template.addMobs.mobEmoteThreePrefill = function(){
     var selectedMob = Session.get('selectedMob');
-    return Mobs.findOne({_id: selectedMob}, {emoteThree: 1}).mobEmoteThree
+    return Mobs.findOne({_id: selectedMob}, {emoteThree: 1}).emoteThree
   };
   Template.addMobs.mobSpawnToPrefill = function(){
     var selectedMob = Session.get('selectedMob');
@@ -300,6 +300,22 @@ Template.roomList.isBuilder = isBuilder;
       };
       return playerMap;
     
+  };
+
+  Template.roomMobs.listMobs = function(){
+    var mobMap = {};
+    var currentUser = Meteor.userId();
+    var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
+    var mobList = Rooms.findOne({_id: roomIn},{'roomContents.mobs':1}).roomContents.mobs;
+    console.log('mobList from Template.roomMobs: ' + mobList);
+
+    //get a list of mobs in the room through mobList
+    //get all their longDescs and emote1 and map it to mobMap
+    //with all the mobs in mobMap, randomly select an emote for each mob
+    //and update the emote in mobMap 
+
+
+    return mobList;//mobMap;
   };
 
 //function that plays a random audio from a list
@@ -710,8 +726,12 @@ Template.loginTitle.welcomeAudio = function(){
               emoteTwo: emoteTwoText,
               emoteThree: emoteThreeText,
               roomIn: roomIn
+      },function(err,_id){
+        console.log("ID of newly created MOB: " + _id);
+        var roomIn = Mobs.findOne({_id: _id}, {roomIn: 1}).roomIn;
+        console.log("roomIn that the new mob is in: " + roomIn);
+        Rooms.update({_id: roomIn},{$push:{'roomContents.mobs': _id}});
       });
-
     }
   },
 
@@ -752,7 +772,7 @@ Template.loginTitle.welcomeAudio = function(){
                         connectedWest: connectedWestText,
                         connectedEast: connectedEastText,
                         connectedSouth: connectedSouthText,
-                        connectedDown: connectedDownText 
+                        connectedDown: connectedDownText
                       }
                 }
               );
@@ -760,7 +780,7 @@ Template.loginTitle.welcomeAudio = function(){
             Rooms.insert({
               roomDesc: roomDescText,
               roomTitle: roomTitleText,
-              roomContents: {players: []},
+              roomContents: {players: [], mobs: []},
              // roomEvents: roomEventsText,
               connectedNorth: connectedNorthText,
               connectedUp: connectedUpText,
