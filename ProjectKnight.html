@@ -2,6 +2,8 @@
   <title>ProjectKnight</title>
 </head>
 
+
+
 <body>
 {{#if currentUser}}
 <div id = "playerPanel">
@@ -19,16 +21,8 @@
 <div id = "roomListPanel"> {{> roomList}} </div>
 {{else}}
 <div id = "loginTitle">{{> loginTitle}}</div>
-{{/if}}	
-
+{{/if}}
 </body>
-
-
-
-
-
-
-
 
 
 
@@ -113,6 +107,7 @@
 
 <template name = "addRoom">
 	{{#if isBuilder}}
+	<center><h3>Room Creation Kit</h3></center>
 	<form id = "addRoomForm">
 	<div>Room Title<br>
       <input type = "text" size = "45" style = "width:95%" id = "roomTitle" value = "{{roomTitlePrefill}}" />
@@ -120,7 +115,7 @@
     <br>
 
     <div>Room Description<br>
-      <textarea type = "text" rows = "15" cols = "" style = "width:95%" id = "roomDesc" value = "{{roomDescPrefill}}"></textarea>
+      <textarea type = "text" rows = "8" cols = "" style = "width:95%" id = "roomDesc" value = "{{roomDescPrefill}}"></textarea>
     </div>
     <br>
    <!-- <div>Room Contents<br>
@@ -134,8 +129,7 @@
     <br>
 
     <div>
-
-	<h3>Rooms to Connect To (enter roomId):</h3>
+    Rooms to Connect To (enter roomId):
 
 	<table id = "connectedTo" style = "width:95%">
 	<tr>
@@ -160,10 +154,18 @@
       <input class = "updateRoom" type = "submit" value = "Update or Add Room">
       &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
       <input type='button' id ='deleteRoom' value = 'Delete Room'/>
+      &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;    	
+      {{> roomGrid}}
     </div>
    </form>
-   {{> roomGrid}}
-  {{/if}}
+
+
+   <br>
+   <br>
+   <div>{{> addMobs}}</div>
+   <div>{{> mobList}}</div>
+   
+   {{/if}}
 </template>
 
 
@@ -186,10 +188,58 @@
   	</ul>
   	
   	{{/if}}
-
 </template>
+
+
 
 <template name = "roomGrid">
 <input type = "button" id = "renderGrid" value = "Render Grid to Console">
-RoomGrid: {{grid}}
+<div>{{grid}}</div>
+</template>
+
+
+<template name = "addMobs">
+	<form id = "addMobsForm">
+	<center><h3>Mob Creation Kit</h3></center>
+	<div>Mob Long Description<br>
+      <input type = "text" size = "45" style = "width:95%" id = "mobLongDesc" value = "{{mobLongDescPrefill}}" />
+    </div>
+    <div>Mob Short Description<br>
+      <input type = "text" size = "45" style = "width:95%" id = "mobShortDesc" value = "{{mobShortDescPrefill}}" />
+    </div>
+    <br>
+    <div>Health</div>
+    <input type = "number" size = "3" id = "mobHealth" value = "{{mobHealthPrefill}}" />
+    <div>Emote1<br>
+      <input type = "text" size = "45" style = "width:95%" id = "mobEmote1" value = "{{mobEmoteOnePrefill}}" />
+    </div>
+    <div>Emote2<br>
+      <input type = "text" size = "45" style = "width:95%" id = "mobEmote2" value = "{{mobEmoteTwoPrefill}}" />
+    </div>
+    <div>Emote3<br>
+      <input type = "text" size = "45" style = "width:95%" id = "mobEmote3" value = "{{mobEmoteThreePrefill}}" />
+    </div>
+   
+    <br>
+    <div>Room to Spawn In:<br>
+      <input type = "text" size = "17" style = "width:95%" id = "mobSpawnTo" value = "{{mobSpawnToPrefill}}" />
+    </div>
+    <br>
+    <input class = "spawnMob" type = "submit" value = "Update or Spawn Mob in Selected Room">
+    <input type='button' id ='deleteMob' value = 'Delete Mob'/>
+    </form>
+</template>
+
+<template name = "mobList">
+	<ul>
+     	<li class = "mobSelect {{selectedMob}}"><br><center>Click here for new mob.</center><br><br></li>	
+    </ul>
+     
+	{{#each listMobs}}
+    <ul>
+    <li class ="mobSelect {{selectedMob}}">{{mobLongDesc}}
+    	<p>Room In: {{roomIn}}</p>
+    </li>
+    </ul>
+  	{{/each}}
 </template>

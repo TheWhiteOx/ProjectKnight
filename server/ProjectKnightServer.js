@@ -12,8 +12,7 @@ Meteor.methods({
 });
 
 
-
-//sets a new account location to Under A Giant Fig Tree room
+//sets a new account location to 'Under A Giant Fig Tree' room
 Accounts.onCreateUser(function(options, user) {
   var startRoom = Rooms.findOne({roomTitle: 'Under A Giant Fig Tree'},{_id: 1})._id;
  

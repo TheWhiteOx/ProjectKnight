@@ -3,6 +3,10 @@
 	background-color: #81DAF5;
 }
 
+.selectedMob {
+    background-color: #9AFE2E;
+}
+
 input#userEmail {
     background-color: transparent; 
     border-style: solid; 
@@ -111,6 +115,13 @@ input#chatTextInput {
 li.roomSelect {
 	line-height:1;
 	list-style-position:outside;
+    border: 1px solid black;
+    
+}
+
+li.mobSelect {
+    line-height:1;
+    list-style-position:outside;
     border: 1px solid black;
     
 }
