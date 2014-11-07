@@ -37,7 +37,6 @@
 
   Template.roomMobs.listMobs = function(){
     var mobMap = {};
-    var emoteArray = [];
     var mobList = [];
     var currentUser = Meteor.userId();
     var roomIn = Meteor.users.findOne({_id: currentUser},{'profile.roomIn': 1}).profile.roomIn;
@@ -47,6 +46,7 @@
   
     //establishes initial display of mobs upon rendering room
   _.each(mobList,function(mobId){
+      var emoteArray = [];
       var randomEmote = "";
       var mobLongDesc = Mobs.findOne({_id: mobId},{mobLongDesc: 1}).mobLongDesc
       emoteArray.push(Mobs.findOne({_id: mobId},{emoteOne: 1}).emoteOne);

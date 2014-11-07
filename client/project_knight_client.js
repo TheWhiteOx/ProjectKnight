@@ -413,6 +413,26 @@ Template.loginTitle.welcomeAudio = function(){
 
   });
 
+  Template.chatBox.events({
+  'submit form#chatForm': function(theEvent,theTemplate){
+       theEvent.preventDefault();
+    var chatMsg = theTemplate.find('#chatTextInput').value;
+    var currentUser = Meteor.userId();
+    $('#chatTextInput').val('');
+    Session.set('sayAudio',_.random(0,100))
+    Session.set('emote','says, '+ '\"'+chatMsg+'.\"');
+    var emote = Session.get('emote');
+    var setStand = Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
+    Meteor.clearTimeout(Session.get('timeoutHandle'));
+    Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': emote}});
+    var timeoutHandle = Meteor.setTimeout(function(){
+      Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
+    },20000);
+    Session.set('timeoutHandle',timeoutHandle);
+
+  }
+});
+
 
   //helpers that grey out compass direction keys if room doesn't exist***WORK IN PROGRESS****
   /*Template.compass.exitNorth = function(){
@@ -507,139 +527,5 @@ Template.loginTitle.welcomeAudio = function(){
 
   //event handlers for compass clicks to move player
 
-
   
-  Template.addMobs.events({
-    
-    'submit form#addMobsForm': function(theEvent,theTemplate){
-    theEvent.preventDefault();
-    var mobLongDescText = theTemplate.find('#mobLongDesc').value;
-    var mobShortDescText = theTemplate.find('#mobShortDesc').value;
-    var mobHealthText = theTemplate.find('#mobHealth').value;
-    var currentEmote = 'is here';
-    var emoteOneText = theTemplate.find('#mobEmote1').value;
-    var emoteTwoText = theTemplate.find('#mobEmote2').value;
-    var emoteThreeText = theTemplate.find('#mobEmote3').value;
-    var roomIn = Session.get('selectedRoom');
-    var selectedMob = Session.get('selectedMob');
-    var selectedRoom = Session.get('selectedRoom');
 
-    if (Session.get('selectedMob') !== undefined){
-        Mobs.update({_id:selectedMob},
-          {$set:{
-              mobLongDesc: mobLongDescText,
-              mobShortDesc: mobShortDescText,
-              mobHealth: mobHealthText,
-              currentEmote: currentEmote,
-              emoteOne: emoteOneText,
-              emoteTwo: emoteTwoText,
-              emoteThree: emoteThreeText,
-              roomIn: roomIn
-          }}
-          )
-
-   }  else {
-      Mobs.insert({
-              mobLongDesc: mobLongDescText,
-              mobShortDesc: mobShortDescText,
-              mobHealth: mobHealthText,
-              currentEmote: currentEmote,
-              emoteOne: emoteOneText,
-              emoteTwo: emoteTwoText,
-              emoteThree: emoteThreeText,
-              roomIn: roomIn
-      },function(err,_id){
-        console.log("ID of newly created MOB: " + _id);
-        var roomIn = Mobs.findOne({_id: _id}, {roomIn: 1}).roomIn;
-        console.log("roomIn that the new mob is in: " + roomIn);
-        Rooms.update({_id: roomIn},{$push:{'roomContents.mobs': _id}});
-      });
-    }
-  },
-
-  'click #deleteMob': function(){
-      console.log('Deleting Mob Id:' + Session.get('selectedMob'))
-      Mobs.remove(Session.get('selectedMob'));
-  }
-
-  });
-
-  
-  Template.addRoom.events({
-
-    'submit form#addRoomForm': function(theEvent,theTemplate){
-       theEvent.preventDefault();
-      var roomTitleText = theTemplate.find('#roomTitle').value;
-      var roomDescText = theTemplate.find('#roomDesc').value;
-      //var roomContentsText = theTemplate.find('#roomContents').value;
-     //var roomEventsText = theTemplate.find('#roomEvents').value;
-      var connectedNorthText = theTemplate.find('#connectedNorth').value;
-      var connectedUpText = theTemplate.find('#connectedUp').value;
-      var connectedWestText = theTemplate.find('#connectedWest').value;
-      var connectedEastText = theTemplate.find('#connectedEast').value;
-      var connectedSouthText = theTemplate.find('#connectedSouth').value;
-      var connectedDownText = theTemplate.find('#connectedDown').value;
-
-      var selectedRoom = Session.get('selectedRoom');
-
-          if (Session.get('selectedRoom') !== undefined){
-            Rooms.update(
-              {_id: selectedRoom},
-                {$set: {roomDesc: roomDescText,
-                        roomTitle: roomTitleText,
-                       // roomContents: roomContentsText,
-                        //roomEvents: roomEventsText,
-                        connectedNorth: connectedNorthText,
-                        connectedUp: connectedUpText,
-                        connectedWest: connectedWestText,
-                        connectedEast: connectedEastText,
-                        connectedSouth: connectedSouthText,
-                        connectedDown: connectedDownText
-                      }
-                }
-              );
-          } else {
-            Rooms.insert({
-              roomDesc: roomDescText,
-              roomTitle: roomTitleText,
-              roomContents: {players: [], mobs: []},
-             // roomEvents: roomEventsText,
-              connectedNorth: connectedNorthText,
-              connectedUp: connectedUpText,
-              connectedWest: connectedWestText,
-              connectedEast: connectedEastText,
-              connectedSouth: connectedSouthText,
-              connectedDown: connectedDownText
-            });
-          };
-     
-    },  
-
-    'click #deleteRoom': function(){
-      console.log('Deleting Room Id: ' + Session.get('selectedRoom'))
-      Rooms.remove(Session.get('selectedRoom'));
-    }
-
-
-
-  });
-
-Template.chatBox.events({
-  'submit form#chatForm': function(theEvent,theTemplate){
-       theEvent.preventDefault();
-    var chatMsg = theTemplate.find('#chatTextInput').value;
-    var currentUser = Meteor.userId();
-    $('#chatTextInput').val('');
-    Session.set('sayAudio',_.random(0,100))
-    Session.set('emote','says, '+ '\"'+chatMsg+'.\"');
-    var emote = Session.get('emote');
-    var setStand = Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
-    Meteor.clearTimeout(Session.get('timeoutHandle'));
-    Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': emote}});
-    var timeoutHandle = Meteor.setTimeout(function(){
-      Meteor.users.update({_id: currentUser},{$set:{'profile.sayMsg': ' is standing here'}});
-    },20000);
-    Session.set('timeoutHandle',timeoutHandle);
-
-  }
-});
