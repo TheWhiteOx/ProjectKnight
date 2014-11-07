@@ -1,7 +1,10 @@
 ProjectKnight
 =============
 A project to learn the Meteor Framework - Inspired by MUDs
-My very first web app on my journey to becoming a software engineer.  Please don't mind the code ugliness!   
+My very first web app on my journey to becoming a software engineer.  Please don't mind the code ugliness!  
+
+A live instance of the project is deployed at projectknight.meteor.com
+
 
       You can login as a new player to roam around the world
       
