@@ -47,6 +47,9 @@ Template.addMobs.events({
   },
 
   'click #deleteMob': function(){
+      var selectedMob = Session.get('selectedMob');
+      var roomIn = Mobs.findOne({_id: selectedMob},{roomIn: 1}).roomIn;
+      Rooms.update({_id: roomIn},{$pull:{'roomContents.mobs': selectedMob}});
       console.log('Deleting Mob Id:' + Session.get('selectedMob'))
       Mobs.remove(Session.get('selectedMob'));
   }
