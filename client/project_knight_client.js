@@ -5,6 +5,9 @@
 });
  
 
+
+
+
  //allows handlebars #each to take in objects and convert them into arrays
   Handlebars.registerHelper('arrayify', function(obj){
     result = [];
@@ -524,8 +527,3 @@ Template.loginTitle.welcomeAudio = function(){
              Meteor.users.update({_id: currentUser},{$set:{'profile.roomIn': roomNorth}});
              moveTo(currentUser,roomIn,roomNorth);*/
   
-
-  //event handlers for compass clicks to move player
-
-  
-
