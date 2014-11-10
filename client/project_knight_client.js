@@ -165,48 +165,6 @@ Template.addRoom.isBuilder = isBuilder;
 Template.roomList.isBuilder = isBuilder;
 
 
-//Helper functions for Builder form field prefillss
-  Template.addRoom.roomTitlePrefill = function(){
-    var selectedRoom = Session.get('selectedRoom');
-    return Rooms.findOne({_id: selectedRoom}, {roomTitle: 1}).roomTitle
-  };
-   Template.addRoom.roomDescPrefill = function(){
-    var selectedRoom = Session.get('selectedRoom');
-    return Rooms.findOne({_id: selectedRoom}, {roomDesc: 1}).roomDesc
-  };
-   Template.addRoom.roomContentsPrefill = function(){
-    var selectedRoom = Session.get('selectedRoom');
-    return Rooms.findOne({_id: selectedRoom}, {roomContents: 1}).roomContents
-  };
-   Template.addRoom.roomEventsPrefill = function(){
-    var selectedRoom = Session.get('selectedRoom');
-    return Rooms.findOne({_id: selectedRoom}, {roomEvents: 1}).roomEvents
-  };
-   Template.addRoom.connectedNorthPrefill = function(){
-    var selectedRoom = Session.get('selectedRoom');
-    return Rooms.findOne({_id: selectedRoom}, {connectedNorth: 1}).connectedNorth
-  };
-   Template.addRoom.connectedWestPrefill = function(){
-    var selectedRoom = Session.get('selectedRoom');
-    return Rooms.findOne({_id: selectedRoom}, {connectedWest: 1}).connectedWest
-  };
-   Template.addRoom.connectedEastPrefill = function(){
-    var selectedRoom = Session.get('selectedRoom');
-    return Rooms.findOne({_id: selectedRoom}, {connectedEast: 1}).connectedEast
-  };
-   Template.addRoom.connectedSouthPrefill = function(){
-    var selectedRoom = Session.get('selectedRoom');
-    return Rooms.findOne({_id: selectedRoom}, {connectedSouth: 1}).connectedSouth
-  };
-   Template.addRoom.connectedUpPrefill = function(){
-    var selectedRoom = Session.get('selectedRoom');
-    return Rooms.findOne({_id: selectedRoom}, {connectedUp: 1}).connectedUp
-  };
-   Template.addRoom.connectedDownPrefill = function(){
-    var selectedRoom = Session.get('selectedRoom');
-    return Rooms.findOne({_id: selectedRoom}, {connectedDown: 1}).connectedDown
-  };
-
 //helper functions to populate player panel with room and room description that user is in
   Template.roomTitle.roomTitleGet = function(){
       var currentUser = Meteor.userId();
@@ -234,50 +192,7 @@ Template.roomList.isBuilder = isBuilder;
 
 
 
-  Template.addMobs.mobLongDescPrefill = function(){
-    var selectedMob = Session.get('selectedMob');
-    return Mobs.findOne({_id: selectedMob}, {mobLongDesc: 1}).mobLongDesc
-  };
-  Template.addMobs.mobShortDescPrefill = function(){
-    var selectedMob = Session.get('selectedMob');
-    return Mobs.findOne({_id: selectedMob}, {mobShortDesc: 1}).mobShortDesc
-  };
-  Template.addMobs.mobHealthPrefill = function(){
-    var selectedMob = Session.get('selectedMob');
-    return Mobs.findOne({_id: selectedMob}, {mobHealth: 1}).mobHealth
-  };
-  Template.addMobs.mobEmoteOnePrefill = function(){
-    var selectedMob = Session.get('selectedMob');
-    return Mobs.findOne({_id: selectedMob}, {emoteOne: 1}).emoteOne
-  };
  
-  Template.addMobs.mobEmoteTwoPrefill = function(){
-    var selectedMob = Session.get('selectedMob');
-    return Mobs.findOne({_id: selectedMob}, {emoteTwo: 1}).emoteTwo
-  };
-  Template.addMobs.mobEmoteThreePrefill = function(){
-    var selectedMob = Session.get('selectedMob');
-    return Mobs.findOne({_id: selectedMob}, {emoteThree: 1}).emoteThree
-  };
-  Template.addMobs.mobSpawnToPrefill = function(){
-    var selectedMob = Session.get('selectedMob');
-    return Mobs.findOne({_id: selectedMob}, {roomIn: 1}).roomIn
-  };
-
-
-
-
-  Template.mobList.listMobs = function(){
-    return Mobs.find().fetch();
-  };
-
-  Template.mobList.selectedMob = function(){
-    var selectedMob = Session.get('selectedMob');
-    var mobId = this._id;
-    if (selectedMob === mobId) {
-      return 'selectedMob';
-    }
-  }
 
 
   //lists players in the room and their emote messages
